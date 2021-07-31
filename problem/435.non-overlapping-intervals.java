@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.Comparator;
+
 /*
  * @lc app=leetcode id=435 lang=java
  *
@@ -59,8 +62,18 @@
 // @lc code=start
 class Solution {
     public int eraseOverlapIntervals(int[][] intervals) {
-        
+        Arrays.sort(intervals, Comparator.comparingInt(o -> o[1]));
+        int cnt = 1;
+        int end = intervals[0][1];
+        for (int i = 1; i < intervals.length; i++) {
+            if (end > intervals[i][0]) {
+                continue;
+            }
+            end = intervals[i][1];
+            cnt++;
+        }
+        return intervals.length - cnt;
     }
 }
 // @lc code=end
-
+// 注意java lambda表达式的使用
