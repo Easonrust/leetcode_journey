@@ -1,40 +1,34 @@
 import java.util.*;
 
 public class App {
-    public String frequencySort(String s) {
-        HashMap<Character, Integer> frequencyForChar = new HashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            frequencyForChar.put(s.charAt(i), frequencyForChar.getOrDefault(s.charAt(i), 0) + 1);
+    private static final String[] KEYS = { "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+
+    public List<String> letterCombinations(String digits) {
+        List<String> combinations = new ArrayList<>();
+        if (digits == null || digits.length() == 0) {
+            return combinations;
         }
-        List<Character>[] buckets = new ArrayList[s.length() + 1];
-        for (char key : frequencyForChar.keySet()) {
-            int frequency = frequencyForChar.get(key);
-            if (buckets[frequency] == null) {
-                buckets[frequency] = new ArrayList<>();
-            }
-            buckets[frequency].add(key);
+        doCombination(new StringBuilder(), combinations, digits);
+        return combinations;
+    }
+
+    private void doCombination(StringBuilder prefix, List<String> combinations, final String digits) {
+        if (prefix.length() == digits.length()) {
+            combinations.add(prefix.toString());
+            return;
         }
-        ArrayList<Character> resultList = new ArrayList<>();
-        for (int i = buckets.length - 1; i >= 0; i--) {
-            if (buckets[i] == null) {
-                continue;
-            }
-            for (int j = 0; j < buckets[i].size(); j++) {
-                for (int m = 0; m < i; m++) {
-                    resultList.add(buckets[i].get(j));
-                }
-            }
+        int curDigits = digits.charAt(prefix.length()) - '0';
+        String letters = KEYS[curDigits];
+        for (char c : letters.toCharArray()) {
+            prefix.append(c); // 添加
+            doCombination(prefix, combinations, digits);
+            prefix.deleteCharAt(prefix.length() - 1); // 删除
         }
-        char[] resultArray = new char[s.length()];
-        for (int i = 0; i < s.length(); i++) {
-            resultArray[i] = resultList.get(i);
-        }
-        String result = new String(resultArray);
-        return result;
     }
 
     public static void main(String[] args) throws Exception {
         App app = new App();
-        System.out.println(app.frequencySort("tree"));
+        int[][] heights = { { 1, 1 }, { 1, 1 }, { 1, 1 } };
+        System.out.println(app.letterCombinations("29"));
     }
 }
