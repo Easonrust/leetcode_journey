@@ -65,12 +65,16 @@
  */
 class Solution {
  public int findSecondMinimumValue(TreeNode root) {
+
+  // 变成-1的情况只能在等于根结点的一支出现
   if (root == null) {
    return -1;
   }
   if (root.left == null && root.right == null) {
    return -1;
   }
+
+  // 后面去找的其实是最小的不等于根结点的子节点
   int leftVal = root.left.val;
   int rightVal = root.right.val;
   if (leftVal == root.val) {
@@ -90,4 +94,4 @@ class Solution {
  }
 }
 // @lc code=end
-// 还不理解，明天需要再看
+// 理解了差不多
