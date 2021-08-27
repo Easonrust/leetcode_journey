@@ -66,12 +66,17 @@
  */
 class Solution {
  public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+
+  // 该子树中没有p或q
   if (root == null) {
    return null;
   }
+
+  // 该子树中有p或q
   if (root == p || root == q) {
    return root;
   }
+
   TreeNode left = lowestCommonAncestor(root.left, p, q);
   TreeNode right = lowestCommonAncestor(root.right, p, q);
   if (left == null) {
