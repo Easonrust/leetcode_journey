@@ -51,7 +51,7 @@ class Solution {
   int[] preIndexOft = new int[256];
   for (int i = 0; i < s.length(); ++i) {
    char sc = s.charAt(i);
-   char tc = s.charAt(i);
+   char tc = t.charAt(i);
    if (preIndexOfs[sc] != preIndexOft[tc]) {
     return false;
    }
