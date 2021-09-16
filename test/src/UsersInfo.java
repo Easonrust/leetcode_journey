@@ -2,20 +2,20 @@ import java.util.ArrayList;
 
 import java.util.*;
 
-class UsersInformation {
+class UsersInfo {
  private class User {
   String name;
   String viewsCnt;
   String category;
  }
 
- public UsersInformation() {
+ public UsersInfo() {
 
  }
 
  private List<User> users;
 
- public UsersInformation(String[] infoStr) {
+ public UsersInfo(String[] infoStr) {
   users = new ArrayList<>();
   for (int i = 2; i < infoStr.length; i = i + 3) {
    User user = new User();
@@ -71,7 +71,7 @@ class UsersInformation {
   return res;
  }
 
- public String[] command(String[] commandStr) {
+ private String[] command(String[] commandStr) {
   List<String> resStrList = new ArrayList<>();
   String[] resStr;
   int i = 0;
@@ -112,7 +112,7 @@ class UsersInformation {
      users.remove(idx);
     }
     i = i + 3;
-   } else if (commandStr[i] == "ViewsInCategory") {
+   } else if (commandStr[i] == " ViewsInCategory") {
     String category = commandStr[i + 1];
     int cnt = getViewsInCategory(category);
     resStrList.add(Integer.toString(cnt));
@@ -122,8 +122,8 @@ class UsersInformation {
     resStrList.add(getTopStreamersInCategory(category));
     i = i + 2;
    } else if (commandStr[i] == "TopStreamer") {
-    resStrList.add(getTopStreamer());
     i = i + 1;
+    resStrList.add(getTopStreamer());
    }
   }
 
@@ -131,15 +131,5 @@ class UsersInformation {
   resStr = (String[]) resStrList.toArray(new String[size]);
 
   return resStr;
- }
-}
-
-public class App {
- public static void main(String[] args) {
-  String[] input1 = { "Ninja", "100000", "Fortnite", "Pokimane", "40000", "Valorant" };
-  UsersInformation usersInfo = new UsersInformation(input1);
-  String[] input2 = { "TopStreamer" };
-  String[] res = usersInfo.command(input2);
-  System.out.println(Arrays.toString(res));
  }
 }
