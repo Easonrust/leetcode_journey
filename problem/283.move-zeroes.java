@@ -41,18 +41,16 @@
 // @lc code=start
 class Solution {
  public void moveZeroes(int[] nums) {
-  int idx = 0;
-  for (int num : nums) {
-   if (num != 0) {
-    nums[idx] = num;
-    ++idx;
+  int cnt = 0, n = nums.length;
+  for (int i = 0; i < n; ++i) {
+   if (nums[i] == 0) {
+    cnt++;
+   } else {
+    nums[i - cnt] = nums[i];
    }
   }
-
-  // idx此时指向最后一个不为0的元素下一个元素
-  while (idx < nums.length) {
-   nums[idx] = 0;
-   idx++;
+  for (int i = n - cnt; i < n; ++i) {
+   nums[i] = 0;
   }
  }
 }
