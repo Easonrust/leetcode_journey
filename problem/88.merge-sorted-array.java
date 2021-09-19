@@ -75,18 +75,18 @@
 // @lc code=start
 class Solution {
  public void merge(int[] nums1, int m, int[] nums2, int n) {
-  int index1 = m - 1, index2 = n - 1, index_merge = m + n - 1;
-
+  int index1 = m - 1, index2 = n - 1, indexMerge = m + n - 1;
   while (index2 >= 0) {
    if (index1 < 0) {
-    nums1[index_merge--] = nums2[index2--];
+    nums1[indexMerge--] = nums2[index2--];
    } else if (nums1[index1] >= nums2[index2]) {
-    nums1[index_merge--] = nums1[index1--];
-   } else if (nums1[index1] < nums2[index2]) {
-    nums1[index_merge--] = nums2[index2--];
+    nums1[indexMerge--] = nums1[index1--];
+   } else {
+    nums1[indexMerge--] = nums2[index2--];
    }
   }
  }
 }
 // @lc code=end
 // 要注意考虑相等的情况
+// 从后面开始合并，防止前面的值被覆盖
