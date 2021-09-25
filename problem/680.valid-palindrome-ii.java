@@ -53,44 +53,21 @@
 class Solution {
  public boolean validPalindrome(String s) {
   int i = 0, j = s.length() - 1;
-  int delete = 0;
-  if (i == j) {
-   return true;
-  }
-  while (i <= j) {
-   char c1 = s.charAt(i);
-   char c2 = s.charAt(i + 1);
-   char c3 = s.charAt(j - 1);
-   char c4 = s.charAt(j);
-   if (c1 == c4) {
-    i++;
-    j--;
-   } else if (delete == 0) {
-    delete = 1;
-    if (c1 == c3 && checkPalindrome(i, j - 1, s)) {
-     j--;
-    } else if (c2 == c4 && checkPalindrome(i + 1, j, s)) {
-     i++;
-    } else {
-     return false;
-    }
-    i++;
-    j--;
-   } else {
-    return false;
+  while (i < j) {
+
+   // 这里注意判断里面中要用到i和j的值，因此不能这样简写
+   if (s.charAt(i) != s.charAt(j)) {
+    return checkPalindrome(i + 1, j, s) || checkPalindrome(i, j - 1, s);
    }
+   i++;
+   j--;
   }
   return true;
  }
 
  public boolean checkPalindrome(int i, int j, String s) {
-  while (i <= j) {
-   char c1 = s.charAt(i);
-   char c2 = s.charAt(j);
-   if (c1 == c2) {
-    i++;
-    j--;
-   } else {
+  while (i < j) {
+   if (s.charAt(i++) != s.charAt(j--)) {
     return false;
    }
   }
