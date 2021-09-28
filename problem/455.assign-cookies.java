@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /*
  * @lc app=leetcode id=455 lang=java
  *
@@ -61,13 +63,13 @@
 // @lc code=start
 class Solution {
  public int findContentChildren(int[] g, int[] s) {
-  if (s == null || g == null) {
+  if (g == null || s == null) {
    return 0;
   }
-  Arrays.sort(s);
   Arrays.sort(g);
-  int si = 0, gi = 0;
-  while (si < s.length && gi < g.length) {
+  Arrays.sort(s);
+  int gi = 0, si = 0;
+  while (gi < g.length && si < s.length) {
    if (s[si] >= g[gi]) {
     gi++;
    }
@@ -78,3 +80,4 @@ class Solution {
 }
 // @lc code=end
 // 贪心算法
+// 优先使用较小的饼干满足欲望较小的孩子
