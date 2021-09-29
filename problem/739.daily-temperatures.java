@@ -60,3 +60,4 @@ class Solution {
  }
 }
 // @lc code=end
+// 将前面的温度的index一一入栈解决
