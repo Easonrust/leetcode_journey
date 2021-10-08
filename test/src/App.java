@@ -3,26 +3,39 @@ import java.util.ArrayList;
 import java.util.*;
 
 public class App {
- public static int getMinJump(int flagHeight, int bigJump) {
-  int[] dp = new int[flagHeight + 1];
-  dp[0] = 0;
-  dp[1] = 1;
-  for (int i = 2; i <= flagHeight; ++i) {
-   if (i < bigJump) {
-    dp[i] = dp[i - 1] + 1;
-   } else {
-    dp[i] = Math.min(dp[i - 1] + 1, dp[i - bigJump] + 1);
-   }
+ public static String longestPalindrome(String s) {
+  String res = findLongestPalindrome(s);
+  return res;
+ }
 
+ static String findLongestPalindrome(String s) {
+  if (isPalindrome(s)) {
+   return s;
   }
-  return dp[flagHeight];
+
+  String str1 = findLongestPalindrome(s.substring(1));
+  String str2 = findLongestPalindrome(s.substring(0, s.length() - 1));
+  if (str1.length() > str2.length()) {
+   return str1;
+  }
+  return str2;
+ }
+
+ static boolean isPalindrome(String s) {
+  int n = s.length();
+  int i = 0;
+  int j = n - 1;
+  while (i < j) {
+   if (s.charAt(i++) != s.charAt(j--)) {
+    return false;
+   }
+  }
+  return true;
  }
 
  public static void main(String args[]) {
-  int[][] bids = new int[][] { { 1, 3, 1, 9866 }, { 2, 1, 2, 5258 }, { 3, 2, 4, 5788 }, { 4, 2, 4, 6536 } };
+  
 
-  int result=getMinJump(8, 3);
-
-  System.out.println(result);
+  System.out.println(longestPalindrome("baba"));
  }
 }
