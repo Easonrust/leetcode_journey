@@ -83,5 +83,34 @@ class Solution {
   return max;
  }
 }
+
+// 更简单的方法
+// class Solution {
+// public int longestConsecutive(int[] nums) {
+// Set<Integer> set=new HashSet<>();
+
+// for(int num:nums){
+// set.add(num);
+// }
+
+// int res=0;
+// for(int num:set){
+
+// //看看num可不可以视为初始元素
+// if(!set.contains(num-1)){
+// int curNum=num;
+// int curLength=1;
+// while(set.contains(curNum+1)){
+// curLength+=1;
+// curNum+=1;
+// }
+// res=Math.max(curLength,res);
+// }
+// }
+// return res;
+// }
+// }
+
+// // HashSet, 加了对是否为初始元素的判断，可以大大减少时间复杂度
 // @lc code=end
 // 对于这种从无序队列中寻找有序序列的题目，要用hashmap的方式求解
