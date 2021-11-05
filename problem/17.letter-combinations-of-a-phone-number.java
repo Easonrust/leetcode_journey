@@ -58,29 +58,35 @@ import java.util.ArrayList;
 
 // @lc code=start
 class Solution {
-    private String[] keys = { "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+ String[] keys = { "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+ List<String> res;
 
-    public List<String> letterCombinations(String digits) {
-        List<String> combinations = new ArrayList<>();
-        if (digits == null || digits.length() == 0) {
-            return combinations;
-        }
-        doCombination(new StringBuilder(), combinations, digits);
-        return combinations;
-    }
+ public List<String> letterCombinations(String digits) {
+  res = new ArrayList<>();
+  int n = digits.length();
+  if (n == 0) {
+   return res;
+  }
+  StringBuilder sb = new StringBuilder();
+  findCombinations(sb, n, digits);
+  return res;
+ }
 
-    private void doCombination(StringBuilder prefix, List<String> combinations, String digits) {
-        if (prefix.length() == digits.length()) {
-            combinations.add(prefix.toString());
-            return;
-        }
-        int curDigits = digits.charAt(prefix.length()) - '0';
-        String letters = keys[curDigits];
-        for (char c : letters.toCharArray()) {
-            prefix.append(c);
-            doCombination(prefix, combinations, digits);
-            prefix.deleteCharAt(prefix.length() - 1);
-        }
-    }
+ public void findCombinations(StringBuilder sb, int n, String digits) {
+  if (sb.length() == n) {
+   res.add(sb.toString());
+   return;
+  }
+
+  int curNum = digits.charAt(sb.length()) - '0';
+  for (char c : keys[curNum].toCharArray()) {
+   sb.append(c);
+   findCombinations(sb, n, digits);
+   sb.deleteCharAt(sb.length() - 1);
+  }
+
+ }
 }
+
+// backtracking review
 // @lc code=end
