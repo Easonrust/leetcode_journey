@@ -29,4 +29,5 @@ class Solution {
 }
 
 // 前缀和prefix sum, sum[i]-sum[j]=sum[j:i]
+// 如果map中存在sum[j]=sum[i]-k的话, 则sum[j:i]=k，前缀和个数加上sum[j]的个数
 // @lc code=end
