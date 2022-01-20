@@ -3,7 +3,7 @@ class Solution {
   int[] nodes = new int[n];
   Arrays.fill(nodes, -1);
 
-  for (int i = 0; i < edges; ++i) {
+  for (int i = 0; i < edges.length; ++i) {
    int x = find(nodes, edges[i][0]);
    int y = find(nodes, edges[i][1]);
 
@@ -15,6 +15,14 @@ class Solution {
    // union
    nodes[x] = y;
   }
+  for (int i = 1; i < n; ++i) {
+   int x = find(nodes, i);
+   int y = find(nodes, i - 1);
+   if (x != y) {
+    return false;
+   }
+  }
+  return true;
  }
 
  private int find(int[] nodes, int i) {
