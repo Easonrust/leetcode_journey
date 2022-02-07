@@ -12,7 +12,7 @@ class Solution {
                 // 最开始或者遇到墙之后, 才去更新记录的可复用的rowHits
                 if (j == 0 || grid[i][j - 1] == 'W') {
                     rowHits = 0;
-                    for (int k = 0; k < n; ++k) {
+                    for (int k = j; k < n; ++k) {
                         if (grid[i][k] == 'W') {
                             break;
                         }
