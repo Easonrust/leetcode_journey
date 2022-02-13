@@ -1,0 +1,32 @@
+public class Codec {
+
+    // Encodes a list of strings to a single string.
+    public String encode(List<String> strs) {
+        if (strs.size() == 0) {
+            return Character.toString((char) 258);
+        }
+        String d = Character.toString((char) 257);
+        StringBuilder sb = new StringBuilder();
+        for (String s : strs) {
+            sb.append(s);
+            sb.append(d);
+        }
+        // 去掉末尾的delim
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+
+    // Decodes a single string to a list of strings.
+    public List<String> decode(String s) {
+        if (s.equals(Character.toString((char) 258))) {
+            return new ArrayList<>();
+        }
+
+        String d = Character.toString((char) 257);
+        return Arrays.asList(s.split(d, -1));
+    }
+}
+// 使用 257 Non-ASCII 做 delimiter，注意split为-1时才能不忽略空字符串
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.decode(codec.encode(strs));
