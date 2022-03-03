@@ -1,12 +1,3 @@
-/*
- * @lc app=leetcode id=53 lang=java
- *
- * [53] Maximum Subarray
- *
- * https://leetcode.com/problems/maximum-subarray/description/
-
- */
-
 // @lc code=start
 class Solution {
  public int maxSubArray(int[] nums) {

@@ -1,14 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
-
-/*
- * @lc app=leetcode id=54 lang=java
- *
- * [54] Spiral Matrix
- */
-
 // @lc code=start
 class Solution {
  private List<Integer> res;
