@@ -1,32 +1,37 @@
-// @lc code=start
 class Solution {
- public int[][] merge(int[][] intervals) {
+    public int[][] merge(int[][] intervals) {
+        List<int[]> list = new ArrayList<>();
+        Arrays.sort(intervals, new Comparator<>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
 
-  // 注意和贪心找最多不重叠区间的个数不同，这里是按照start排序，因为我们这里不是要尽可能给后面的区间留出空间，而是要合并区间
-  Arrays.sort(intervals, new Comparator<>() {
-   public int compare(int[] o1, int[] o2) {
-    return o1[0] - o2[0];
-   }
-  });
-  List<int[]> res = new ArrayList<>();
-  int end = intervals[0][1];
+        int end = intervals[0][1];
+        int idx = 0;
+        list.add(new int[] { intervals[0][0], intervals[0][1] });
+        for (int i = 1; i < intervals.length; ++i) {
+            if (end >= intervals[i][0]) {
+                // overlapping;
+                int[] temp = list.get(idx);
+                if (temp[1] < intervals[i][1]) {
+                    end = intervals[i][1];
+                    list.set(idx, new int[] { temp[0], end });
+                }
+            } else {
+                idx++;
+                list.add(intervals[i]);
+                end = intervals[i][1];
+            }
+        }
 
-  // 便于我们追踪到当前list里面的区间
-  int index = 0;
-  res.add(intervals[0]);
-  for (int i = 1; i < intervals.length; ++i) {
-   if (end >= intervals[i][0]) {
-    // overlapping
-    end = Math.max(end, intervals[i][1]);
-    int[] temp = res.get(index);
-    res.set(index, new int[] { temp[0], end });
-   } else {
-    index++;
-    res.add(intervals[i]);
-    end = intervals[i][1];
-   }
-  }
-  return res.toArray(new int[res.size()][]);
- }
+        int[][] res = new int[list.size()][2];
+        for (int i = 0; i < list.size(); ++i) {
+            int[] temp = list.get(i);
+            res[i][0] = temp[0];
+            res[i][1] = temp[1];
+        }
+        return res;
+    }
 }
-// @lc code=end
