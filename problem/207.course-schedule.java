@@ -1,57 +1,44 @@
-import java.util.ArrayList;
-import java.util.List;
-
-/*
- * @lc app=leetcode id=207 lang=java
- *
- * [207] Course Schedule
- */
-
-// @lc code=start
 class Solution {
- public boolean canFinish(int numCourses, int[][] prerequisites) {
+    boolean hasCycle = false;
 
-  // 用于标记当前节点是否被访问过了，减小运算量
-  boolean[] globalMarked = new boolean[numCourses];
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+        boolean[] visited = new boolean[numCourses];
+        boolean[] onPath = new boolean[numCourses];
+        for (int i = 0; i < numCourses; ++i) {
+            dfs(visited, onPath, graph, i);
+        }
+        return !hasCycle;
+    }
 
-  // 用于标记在本次递归中节点是否被访问过了，从而判断图中是否存在环
-  boolean[] localMarked = new boolean[numCourses];
+    private List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
+        List<Integer>[] graph = new ArrayList[numCourses];
 
-  List<Integer>[] graph = new List[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            graph[i] = new ArrayList<>();
+        }
 
-  for (int i = 0; i < numCourses; ++i) {
-   graph[i] = new ArrayList<>();
-  }
-  for (int[] pre : prerequisites) {
-   graph[pre[0]].add(pre[1]);
-  }
-  for (int i = 0; i < numCourses; ++i) {
-   if (hasCycle(globalMarked, localMarked, i, graph)) {
-    return false;
-   }
-  }
-  return true;
- }
+        for (int[] edge : prerequisites) {
+            graph[edge[1]].add(edge[0]);
+        }
 
- private boolean hasCycle(boolean[] globalMarked, boolean[] localMarked, int curNode, List<Integer>[] graph) {
-  if (localMarked[curNode]) {
-   return true;
-  }
-  if (globalMarked[curNode]) {
-   return false;
-  }
-  localMarked[curNode] = true;
-  globalMarked[curNode] = true;
-  for (int nextNode : graph[curNode]) {
-   if (hasCycle(globalMarked, localMarked, nextNode, graph)) {
-    return true;
-   }
-  }
+        return graph;
+    }
 
-  // 回溯
-  localMarked[curNode] = false;
-  return false;
- }
+    private void dfs(boolean[] visited, boolean[] onPath, List<Integer>[] graph, int cur) {
+        if (onPath[cur]) {
+            hasCycle = true;
+        }
+
+        if (visited[cur]) {
+            return;
+        }
+
+        visited[cur] = true;
+        onPath[cur] = true;
+        for (int next : graph[cur]) {
+            dfs(visited, onPath, graph, next);
+        }
+        onPath[cur] = false;
+    }
 }
-// @lc code=end
-// 本题中判断有向图中是否存在环即可

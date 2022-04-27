@@ -1,36 +1,32 @@
-/*
- * @lc app=leetcode id=22 lang=java
- *
- * [22] Generate Parentheses
- */
-
-// @lc code=start
 class Solution {
- public List<String> generateParenthesis(int n) {
-  List<String> res = new ArrayList<>();
-  StringBuilder cur = new StringBuilder();
-  backTracking(cur, 0, 0, n, res);
-  return res;
- }
+    List<String> res;
 
- void backTracking(StringBuilder cur, int left, int right, int cnt, List<String> res) {
-  if (cur.length() == cnt * 2) {
-   res.add(cur.toString());
-   return;
-  }
+    public List<String> generateParenthesis(int n) {
+        res = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        backTracking(n, n, sb);
+        return res;
+    }
 
-  if (left < cnt) {
-   cur.append('(');
-   backTracking(cur, left + 1, right, cnt, res);
-   cur.deleteCharAt(cur.length() - 1);
-  }
-  if (right < left) {
-   cur.append(')');
-   backTracking(cur, left, right + 1, cnt, res);
-   cur.deleteCharAt(cur.length() - 1);
-  }
-  return;
- }
+    private void backTracking(int left, int right, StringBuilder sb) {
+        if (left > right) {
+            return;
+        }
+
+        if (left < 0 || right < 0) {
+            return;
+        }
+
+        if (left == 0 && right == 0) {
+            res.add(sb.toString());
+        }
+
+        sb.append('(');
+        backTracking(left - 1, right, sb);
+        sb.deleteCharAt(sb.length() - 1);
+
+        sb.append(')');
+        backTracking(left, right - 1, sb);
+        sb.deleteCharAt(sb.length() - 1);
+    }
 }
-// backTracking
-// @lc code=end

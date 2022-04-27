@@ -1,37 +1,48 @@
 class Solution {
- public boolean validTree(int n, int[][] edges) {
-  int[] nodes = new int[n];
-  Arrays.fill(nodes, -1);
+    class UF {
+        int count;
+        int[] parent;
 
-  for (int i = 0; i < edges.length; ++i) {
-   int x = find(nodes, edges[i][0]);
-   int y = find(nodes, edges[i][1]);
+        UF(int n) {
+            count = n;
+            parent = new int[n];
+            for (int i = 0; i < n; ++i) {
+                parent[i] = i;
+            }
+        }
 
-   // 如果二者的联通分量编号相同，说明已经被连过了，即存在环
-   if (x == y) {
-    return false;
-   }
+        public int find(int x) {
+            while (x != parent[x]) {
+                x = parent[x];
+            }
+            return x;
+        }
 
-   // union
-   nodes[x] = y;
-  }
-  for (int i = 1; i < n; ++i) {
-   int x = find(nodes, i);
-   int y = find(nodes, i - 1);
-   if (x != y) {
-    return false;
-   }
-  }
-  return true;
- }
+        public boolean connect(int i, int j) {
+            return find(i) == find(j);
+        }
 
- private int find(int[] nodes, int i) {
-  if (nodes[i] == -1) {
-   return i;
-  }
+        public void union(int i, int j) {
+            int x = parent[i];
+            int y = parent[j];
+            if (x == y) {
+                return;
+            }
+            parent[x] = y;
+            count--;
+        }
+    }
 
-  return find(nodes, nodes[i]);
- }
+    public boolean validTree(int n, int[][] edges) {
+        UF uf = new UF(n);
+        for (int[] edge : edges) {
+            int i = edge[0];
+            int j = edge[1];
+            if (uf.connect(i, j)) {
+                return false;
+            }
+            uf.union(i, j);
+        }
+        return uf.count == 1;
+    }
 }
-
-// 使用union-find
