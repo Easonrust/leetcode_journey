@@ -1,96 +1,104 @@
-/*
- * @lc app=leetcode id=146 lang=java
- *
- * [146] LRU Cache
- */
 
-// @lc code=start
 class LRUCache {
- class DNode {
-  int val;
-  int key;
-  DNode pre;
-  DNode next;
- }
+    class DNode {
+        int key, val;
+        DNode pre;
+        DNode next;
 
- DNode head;
- DNode tail;
+        DNode(int key, int val) {
+            this.key = key;
+            this.val = val;
+        }
+    }
 
- public void addNode(DNode node) {
-  node.pre = head;
-  node.next = head.next;
-  head.next.pre = node;
-  head.next = node;
- }
+    class DoubleList {
+        DNode head;
+        DNode tail;
+        int size;
 
- public void removeNode(DNode node) {
-  node.pre.next = node.next;
-  node.next.pre = node.pre;
- }
+        DoubleList() {
+            head = new DNode(0, 0);
+            tail = new DNode(0, 0);
+            head.next = tail;
+            tail.pre = head;
+            size = 0;
+        }
 
- public void moveToHead(DNode node) {
-  removeNode(node);
-  addNode(node);
- }
+        public void addLast(DNode node) {
+            tail.pre.next = node;
+            node.pre = tail.pre;
+            node.next = tail;
+            tail.pre = node;
+            size++;
+        }
 
- public int popTail() {
-  DNode node = tail.pre;
-  removeNode(node);
-  return node.key;
- }
+        public void remove(DNode node) {
+            if (size == 0) {
+                return;
+            }
+            node.pre.next = node.next;
+            node.next.pre = node.pre;
+            size--;
+        }
 
- // 定义一个双向链表，这样可以在任何位置很方便地删除和添加node
+        public DNode removeFirst() {
+            if (size == 0) {
+                return null;
+            }
+            DNode node = head.next;
+            head.next = node.next;
+            node.next.pre = head;
+            size--;
+            return node;
+        }
+    }
 
- Map<Integer, DNode> nodeForKey;
- int c;
- int s;
+    int capacity;
+    Map<Integer, DNode> map;
+    DoubleList dList;
 
- public LRUCache(int capacity) {
-  nodeForKey = new HashMap<>();
-  c = capacity;
-  s = 0;
-  head = new DNode();
-  tail = new DNode();
-  head.pre = null;
-  head.next = tail;
-  tail.pre = head;
-  tail.next = null;
- }
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        dList = new DoubleList();
+        map = new HashMap<>();
+    }
 
- public int get(int key) {
-  if (!nodeForKey.containsKey(key)) {
-   return -1;
-  }
-  DNode node = nodeForKey.get(key);
-  moveToHead(node);
-  return node.val;
- }
+    public int get(int key) {
+        if (!map.containsKey(key)) {
+            return -1;
+        }
+        DNode node = map.get(key);
+        dList.remove(node);
+        dList.addLast(node);
+        return node.val;
+    }
 
- public void put(int key, int value) {
-  if (nodeForKey.containsKey(key)) {
-   DNode node = nodeForKey.get(key);
-   node.val = value;
-   moveToHead(node);
-  } else {
-   if (s == c) {
-    int k = popTail();
-    nodeForKey.remove(k);
-    s--;
-   }
-   DNode node = new DNode();
-   node.key = key;
-   node.val = value;
-   addNode(node);
-   nodeForKey.put(key, node);
-   s++;
-  }
- }
+    public void put(int key, int value) {
+        if (map.containsKey(key)) {
+            DNode node = map.get(key);
+            node.val = value;
+            dList.remove(node);
+            dList.addLast(node);
+            map.put(key, node);
+        } else {
+            if (dList.size < this.capacity) {
+                DNode node = new DNode(key, value);
+                dList.addLast(node);
+                map.put(key, node);
+            } else {
+                DNode first = dList.removeFirst();
+                map.remove(first.key);
+                DNode node = new DNode(key, value);
+                dList.addLast(node);
+                map.put(key, node);
+            }
+        }
+    }
 }
 
-// 使用双向链表和hashmap实现，高频必考
-
 /**
- * Your LRUCache object will be instantiated and called as such: LRUCache obj =
- * new LRUCache(capacity); int param_1 = obj.get(key); obj.put(key,value);
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
  */
-// @lc code=end
