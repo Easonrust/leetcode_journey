@@ -1,45 +1,91 @@
-/*
- * @lc app=leetcode id=1268 lang=java
- *
- * [1268] Search Suggestions System
- */
+class Trie {
+    class TreeNode {
+        TreeNode[] next;
+        boolean isEnd;
 
-// @lc code=start
-class Solution {
- public List<List<String>> suggestedProducts(String[] products, String searchWord) {
-  Arrays.sort(products);
-  List<List<String>> res = new ArrayList<>();
-  int n = searchWord.length();
-  for (int i = 1; i <= n; ++i) {
-   String prefix = searchWord.substring(0, i);
-   List<String> product = new ArrayList<>();
-   int cnt = 0;
-   for (int j = 0; j < products.length; ++j) {
-    if (isPrefix(prefix, products[j])) {
-     cnt++;
-     product.add(products[j]);
+        TreeNode() {
+            isEnd = false;
+            next = new TreeNode[26];
+        }
     }
-    if (cnt == 3) {
-     break;
-    }
-   }
-   res.add(product);
-  }
-  return res;
- }
 
- boolean isPrefix(String prefix, String s) {
-  int m = prefix.length();
-  int n = s.length();
-  if (m > n) {
-   return false;
-  }
-  for (int i = 0; i < m; ++i) {
-   if (prefix.charAt(i) != s.charAt(i)) {
-    return false;
-   }
-  }
-  return true;
- }
+    TreeNode root = new TreeNode();
+    List<String> resultBuffer;
+
+    public void insert(String s) {
+        TreeNode node = root;
+        for (char c : s.toCharArray()) {
+            if (node.next[c - 'a'] == null) {
+                node.next[c - 'a'] = new TreeNode();
+            }
+            node = node.next[c - 'a'];
+        }
+        node.isEnd = true;
+    }
+
+    public boolean search(String s) {
+        TreeNode node = root;
+        for (char c : s.toCharArray()) {
+            if (node.next[c - 'a'] == null) {
+                return false;
+            }
+            node = node.next[c - 'a'];
+        }
+        return node.isEnd == true;
+    }
+
+    public boolean getWordsStartWith(String prefix) {
+        resultBuffer = new ArrayList<>();
+        TreeNode node = root;
+        for (char c : prefix.toCharArray()) {
+            if (node.next[c - 'a'] == null) {
+                return false;
+            }
+            node = node.next[c - 'a'];
+        }
+        StringBuilder sb = new StringBuilder(prefix);
+
+        dfs(node, sb);
+        return true;
+    }
+
+    public void dfs(TreeNode node, StringBuilder sb) {
+        if (resultBuffer.size() == 3) {
+            return;
+        }
+        if (node.isEnd) {
+            resultBuffer.add(sb.toString());
+        }
+        for (int i = 0; i < node.next.length; ++i) {
+            if (node.next[i] != null) {
+                sb.append((char) ('a' + i));
+                dfs(node.next[i], sb);
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+    }
 }
-// @lc code=end
+
+class Solution {
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        Arrays.sort(products);
+        Trie trie = new Trie();
+        for (String product : products) {
+            trie.insert(product);
+        }
+
+        List<List<String>> res = new ArrayList<>();
+        int i;
+        for (i = 1; i <= searchWord.length(); ++i) {
+            if (trie.getWordsStartWith(searchWord.substring(0, i))) {
+                res.add(trie.resultBuffer);
+            } else {
+                break;
+            }
+        }
+        for (; i <= searchWord.length(); ++i) {
+            res.add(new ArrayList<>());
+        }
+        return res;
+    }
+}
