@@ -1,61 +1,46 @@
-/*
- * @lc app=leetcode id=76 lang=java
- *
- * [76] Minimum Window Substring
- */
-
-// @lc code=start
 class Solution {
- public String minWindow(String s, String t) {
-  int l = 0;
-  int r = 0;
-  int n = s.length();
-  String res = "";
-  int minLength = Integer.MAX_VALUE;
+    public String minWindow(String s, String t) {
+        Map<Character, Integer> window = new HashMap<>();
+        Map<Character, Integer> needs = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            needs.put(c, needs.getOrDefault(c, 0) + 1);
+        }
 
-  // 先记录下来t中各字符出现的次数
-  Map<Character, Integer> map1 = new HashMap<>();
-  for (char c : t.toCharArray()) {
-   map1.put(c, map1.getOrDefault(c, 0) + 1);
-  }
+        int left = 0;
+        int right = 0;
+        int start = 0;
+        int len = Integer.MAX_VALUE;
+        while (right < s.length()) {
+            char c1 = s.charAt(right);
+            right++;
+            window.put(c1, window.getOrDefault(c1, 0) + 1);
 
-  Map<Character, Integer> map2 = new HashMap<>();
+            int valid = 0;
+            for (char c : needs.keySet()) {
+                if (window.getOrDefault(c, 0) >= needs.get(c)) {
+                    valid++;
+                }
+            }
 
-  while (r <= n) {
-   String temp = s.substring(l, r);
-   if (checkSubstring(map1, map2)) {
-    if (temp.length() < minLength) {
-     minLength = temp.length();
-     res = temp;
+            while (valid == needs.keySet().size()) {
+                if (right - left < len) {
+                    start = left;
+                    len = right - left;
+                }
+
+                char c2 = s.charAt(left);
+                left++;
+                window.put(c2, window.get(c2) - 1);
+                for (char c : needs.keySet()) {
+                    if (window.get(c) < needs.get(c)) {
+                        valid--;
+                    }
+                }
+            }
+        }
+        if (len == Integer.MAX_VALUE) {
+            return "";
+        }
+        return s.substring(start, start + len);
     }
-    char c = s.charAt(l);
-    map2.put(c, map2.get(c) - 1);
-    l++;
-   } else {
-    if (r < n) {
-     char c = s.charAt(r);
-     map2.put(c, map2.getOrDefault(c, 0) + 1);
-    }
-    r++;
-   }
-  }
-
-  return res;
- }
-
- private boolean checkSubstring(Map<Character, Integer> map1, Map<Character, Integer> map2) {
-
-  for (char c : map1.keySet()) {
-   if (!map2.containsKey(c)) {
-    return false;
-   }
-
-   if (map1.get(c) > map2.get(c)) {
-    return false;
-   }
-  }
-  return true;
- }
 }
-// @lc code=end
-// 滑动窗口，注意数组越界
