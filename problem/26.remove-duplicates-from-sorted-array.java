@@ -9,7 +9,6 @@ class Solution {
             }
             fast++;
         }
-
         return slow + 1;
     }
 }
