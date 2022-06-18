@@ -1,10 +1,3 @@
-/*
- * @lc app=leetcode id=142 lang=java
- *
- * [142] Linked List Cycle II
- */
-
-// @lc code=start
 /**
  * Definition for singly-linked list.
  * class ListNode {
@@ -16,20 +9,43 @@
  * }
  * }
  */
+// public class Solution {
+// public ListNode detectCycle(ListNode head) {
+// Set<ListNode> set=new HashSet<>();
+// ListNode node=head;
+// while(node!=null){
+// if(set.contains(node)){
+// return node;
+// }
+// set.add(node);
+// node=node.next;
+// }
+// return null;
+// }
+// }
 public class Solution {
- public ListNode detectCycle(ListNode head) {
-  Set<ListNode> set = new HashSet<>();
-  ListNode node = head;
-  while (node != null) {
-   if (set.contains(node)) {
-    return node;
-   }
-   set.add(node);
-   node = node.next;
-  }
-  return null;
- }
-}
+    public ListNode detectCycle(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                break;
+            }
+        }
 
-// 用hashset处理环问题
-// @lc code=end
+        if (fast == null || fast.next == null) {
+            return null;
+        }
+
+        slow = head;
+
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        return slow;
+    }
+}
