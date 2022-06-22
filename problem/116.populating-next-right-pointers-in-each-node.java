@@ -1,15 +1,3 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
-
-import jdk.internal.jimage.ImageReader.Node;
-
-/*
- * @lc app=leetcode id=116 lang=java
- *
- * [116] Populating Next Right Pointers in Each Node
- */
-
-// @lc code=start
 /*
 // Definition for a Node.
 class Node {
@@ -34,32 +22,22 @@ class Node {
 */
 
 class Solution {
- public Node connect(Node root) {
-  if (root == null) {
-   return root;
-  }
-  if (root.left == null && root.right == null) {
-   return root;
-  }
-  Deque<Node> queue = new ArrayDeque<>();
-  queue.offer(root);
-  while (!queue.isEmpty()) {
-   Node cur = null;
-   int size = queue.size();
-   while (size-- > 0) {
-    Node node = queue.poll();
-    if (node.right != null) {
-     queue.offer(node.right);
+    public Node connect(Node root) {
+        if (root == null) {
+            return null;
+        }
+        traverse(root.left, root.right);
+        return root;
     }
-    if (node.left != null) {
-     queue.offer(node.left);
+
+    private void traverse(Node node1, Node node2) {
+        if (node1 == null) {
+            return;
+        }
+
+        node1.next = node2;
+        traverse(node1.left, node1.right);
+        traverse(node2.left, node2.right);
+        traverse(node1.right, node2.left);
     }
-    node.next = cur;
-    cur = node;
-   }
-  }
-  return root;
- }
 }
-// @lc code=end
-// 对树进行从右向左的层次遍历即可
