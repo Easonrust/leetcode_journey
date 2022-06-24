@@ -14,26 +14,22 @@
  * }
  */
 class Solution {
-    int res = 0;
-    int rank = 0;
-    public int kthSmallest(TreeNode root, int k) {
-        inOrder(root, k);
-        return res;
+    int sum = 0;
+    public TreeNode bstToGst(TreeNode root) {
+        inOrder(root);
+        return root;
     }
     
-    private void inOrder(TreeNode node, int k){
+    private void inOrder(TreeNode node){
         if(node==null){
             return;
         }
         
-        inOrder(node.left, k);
+        inOrder(node.right);
         
-        rank++;
-        if(rank==k){
-            res = node.val;
-            return;
-        }
+        sum+=node.val;
+        node.val = sum;
         
-        inOrder(node.right,k);
+        inOrder(node.left);
     }
 }
