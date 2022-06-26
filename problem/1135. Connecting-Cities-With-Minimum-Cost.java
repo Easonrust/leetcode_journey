@@ -1,40 +1,68 @@
 class Solution {
-    private int[] cities;
-
     public int minimumCost(int n, int[][] connections) {
+        UF uf = new UF(n+1);
+        Arrays.sort(connections, (o1,o2)->(o1[2]-o2[2]));
         int res = 0;
-        int cnt = 1;
-        Arrays.sort(connections, new Comparator<>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                return o1[2] - o2[2];
-            }
-        });
-
-        cities = new int[n + 1];
-        Arrays.fill(cities, -1);
-
-        for (int i = 0; i < connections.length; ++i) {
-            int x = find(connections[i][0]);
-            int y = find(connections[i][1]);
-            if (find(x) == find(y)) {
+        for(int[] connection:connections){
+            int x = connection[0];
+            int y = connection[1];
+            int cost = connection[2];
+            if(uf.connected(x,y)){
                 continue;
             }
-            cities[x] = y;
-            res += connections[i][2];
-            cnt += 1;
+            uf.union(x,y);
+            res += cost;
         }
-
-        return cnt == n ? res : -1;
-    }
-
-    private int find(int id) {
-        if (cities[id] == -1) {
-            return id;
+        if(uf.count()!=2){
+            return -1;
         }
-
-        return find(cities[id]);
+        return res;
     }
 }
 
-// Kruskal MST 算法，使用union-find
+class UF {
+    int count;
+    int[] size;
+    int[] parent;
+    public UF(int n){
+        count = n;
+        size = new int[n];
+        parent = new int[n];
+        for(int i=0;i<n;++i){
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+    
+    public int find(int x){
+        while(parent[x]!=x){
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+    }
+    
+    public void union(int x, int y){
+        int rootX = find(x);
+        int rootY = find(y);
+        if(rootX==rootY){
+            return;
+        }
+        if(size[rootX]<size[rootY]){
+            parent[rootX] = rootY;
+            size[rootY] += size[rootX];
+        }else{
+            parent[rootY] = rootX;
+            size[rootX] += size[rootY];
+        }
+        count--;
+    }
+    
+    public boolean connected(int x, int y){
+        return find(x)==find(y);
+    }
+    
+    public int count(){
+        return this.count;
+    }
+}

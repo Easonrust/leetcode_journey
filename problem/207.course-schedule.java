@@ -1,44 +1,47 @@
 class Solution {
     boolean hasCycle = false;
-
+    boolean[] onPath;
+    boolean[] visited;
+    
+    List<Integer>[] buildGraph(int n, int[][] prerequisites){
+        List<Integer>[] graph = new ArrayList[n];
+        for(int i=0;i<n;++i){
+            graph[i] = new ArrayList<>();
+        }
+        
+        for(int[] prerequisite:prerequisites){
+            int from = prerequisite[1];
+            int to = prerequisite[0];
+            graph[from].add(to);
+        }
+        return graph;
+    }
+    
     public boolean canFinish(int numCourses, int[][] prerequisites) {
+        onPath = new boolean[numCourses];
+        visited = new boolean[numCourses];
         List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-        boolean[] visited = new boolean[numCourses];
-        boolean[] onPath = new boolean[numCourses];
-        for (int i = 0; i < numCourses; ++i) {
-            dfs(visited, onPath, graph, i);
+        for(int i=0;i<numCourses;++i){
+            traverse(graph,i);
         }
         return !hasCycle;
     }
-
-    private List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-        List<Integer>[] graph = new ArrayList[numCourses];
-
-        for (int i = 0; i < numCourses; i++) {
-            graph[i] = new ArrayList<>();
-        }
-
-        for (int[] edge : prerequisites) {
-            graph[edge[1]].add(edge[0]);
-        }
-
-        return graph;
-    }
-
-    private void dfs(boolean[] visited, boolean[] onPath, List<Integer>[] graph, int cur) {
-        if (onPath[cur]) {
+    
+    private void traverse(List<Integer>[] graph, int s){
+        if(onPath[s]==true){
             hasCycle = true;
         }
-
-        if (visited[cur]) {
+        
+        if(visited[s]||hasCycle){
             return;
         }
-
-        visited[cur] = true;
-        onPath[cur] = true;
-        for (int next : graph[cur]) {
-            dfs(visited, onPath, graph, next);
+        
+        visited[s] = true;
+        onPath[s] = true;
+        for(int v:graph[s]){
+            traverse(graph,v);
         }
-        onPath[cur] = false;
+        onPath[s] = false;
     }
+    
 }
