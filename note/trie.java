@@ -1,4 +1,4 @@
-class WordDictionary {
+class Trie {
     class TrieNode {
         public static final int R = 26;
         TrieNode[] next;

@@ -1,27 +1,29 @@
-import java.util.ArrayList;
-// @lc code=start
 class Solution {
+    List<List<Integer>> res;
+    List<Integer> track;
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List<List<Integer>> results = new ArrayList<>();
-        List<Integer> result = new ArrayList<>();
-        backTracking(results, result, candidates, 0, target);
-        return results;
+        res = new ArrayList<>();
+        track = new ArrayList<>();
+        backTracking(candidates, 0, target, 0);
+        return res;
     }
-
-    private void backTracking(List<List<Integer>> results, List<Integer> result, int[] candidates, int start,
-            int target) {
-        if (target == 0) {
-            results.add(new ArrayList<>(result));
+    
+    private void backTracking(int[] candidates, int start, int target, int sum){
+        if(sum==target){
+            res.add(new ArrayList<>(track));
             return;
         }
-        for (int i = start; i < candidates.length; ++i) {
-            if (candidates[i] <= target) {
-                result.add(candidates[i]);
-                backTracking(results, result, candidates, i, target - candidates[i]);
-                result.remove(result.size() - 1);
-            }
+        
+        if(sum>target){
+            return;
+        }
+        
+        for(int i=start; i<candidates.length; ++i){
+            track.add(candidates[i]);
+            sum += candidates[i];
+            backTracking(candidates, i, target, sum);
+            sum -= candidates[i];
+            track.remove(track.size()-1);
         }
     }
 }
-// @lc code=end
-// 这种组合问题要想避免重复，就要增加一个start元素在backTracking里面

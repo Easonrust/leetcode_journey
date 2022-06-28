@@ -1,38 +1,40 @@
 class Solution {
- private int[][] grid;
- private boolean[][] visited;
- private StringBuffer currentIsland;
-
- public int numDistinctIslands(int[][] grid) {
-  this.grid = grid;
-  this.visited = new boolean[grid.length][grid[0].length];
-  Set<String> islands = new HashSet<>();
-  for (int row = 0; row < grid.length; row++) {
-   for (int col = 0; col < grid[0].length; col++) {
-    currentIsland = new StringBuffer();
-    dfs(row, col, '0');
-    if (currentIsland.length() == 0) {
-     continue;
+    public int numDistinctIslands(int[][] grid) {
+        Set<String> islands = new HashSet<>();
+        int m = grid.length;
+        int n = grid[0].length;
+        for(int i=0; i<m; ++i){
+            for(int j=0; j<n; ++j){
+                if(grid[i][j]==1){
+                    StringBuilder sb = new StringBuilder();
+                    dfs(grid, i, j, 1, sb);
+                    islands.add(sb.toString());
+                }
+            }
+        }
+        
+        return islands.size();
     }
-    islands.add(currentIsland.toString());
-   }
-  }
-  return islands.size();
- }
-
- private void dfs(int row, int col, char dir) {
-  if (row < 0 || col < 0 || row >= grid.length || col >= grid[0].length)
-   return;
-  if (visited[row][col] || grid[row][col] == 0)
-   return;
-  visited[row][col] = true;
-  currentIsland.append(dir);
-  dfs(row + 1, col, 'D');
-  dfs(row - 1, col, 'U');
-  dfs(row, col + 1, 'R');
-  dfs(row, col - 1, 'L');
-  currentIsland.append('0');
- }
+    
+    private void dfs(int[][] grid, int i, int j, int dir, StringBuilder sb){
+        int m = grid.length;
+        int n = grid[0].length;
+        
+        if(!(i>=0&&i<m&&j>=0&&j<n)){
+            return;
+        }
+        
+        if(grid[i][j]==0){
+            return;
+        }
+        
+        sb.append(dir);
+        grid[i][j] = 0;
+        
+        dfs(grid, i+1, j, 1, sb);
+        dfs(grid, i-1, j, 2, sb);
+        dfs(grid, i, j+1, 3, sb);
+        dfs(grid, i, j-1, 4, sb);
+        sb.append(-dir);
+    }
 }
-
-// 用路径组成的字符串对每个岛进行hash
