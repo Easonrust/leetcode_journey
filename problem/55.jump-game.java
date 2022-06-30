@@ -1,15 +1,14 @@
-// @lc code=start
 class Solution {
- public boolean canJump(int[] nums) {
-  int mx = 0;
-  for (int i = 0; i < nums.length; ++i) {
-   if (mx < i) {
-    return false;
-   }
-   mx = Math.max(mx, i + nums[i]);
-  }
-  return true;
- }
+    public boolean canJump(int[] nums) {
+        int n = nums.length;
+        int farthest = 0;
+        for(int i=0; i<nums.length; ++i){
+            if(farthest<i){
+                return false;
+            }
+            farthest = Math.max(farthest, i+nums[i]);
+        }
+        
+        return farthest>=n-1;
+    }
 }
-// @lc code=end
-// 贪心算法求mx，即能跳到的最远的位置

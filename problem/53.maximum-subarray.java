@@ -1,14 +1,17 @@
-// @lc code=start
 class Solution {
- public int maxSubArray(int[] nums) {
-  int maxSum = nums[0], preSum = nums[0];
-  for (int i = 1; i < nums.length; ++i) {
-   preSum = preSum > 0 ? preSum + nums[i] : nums[i];
-   maxSum = Math.max(maxSum, preSum);
-  }
-  return maxSum;
- }
+    public int maxSubArray(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int [n];
+        dp[0] = nums[0];
+        for(int i=1; i<n; ++i){
+            dp[i] = Math.max(dp[i-1]+nums[i], nums[i]);
+        }
+        
+        int res = Integer.MIN_VALUE;
+        for(int d:dp){
+            res = Math.max(res, d);
+        }
+        
+        return res;
+    }
 }
-// @lc code=end
-// 有点像股票那题
-// 贪心算法解题
