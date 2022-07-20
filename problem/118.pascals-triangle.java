@@ -1,30 +1,24 @@
-/*
- * @lc app=leetcode id=118 lang=java
- *
- * [118] Pascal's Triangle
- */
-
-// @lc code=start
 class Solution {
- public List<List<Integer>> generate(int numRows) {
-  List<List<Integer>> res = new ArrayList<>();
-  List<Integer> firstRow = new ArrayList<>();
-  firstRow.add(1);
-  res.add(firstRow);
-  for (int i = 1; i < numRows; ++i) {
-   List<Integer> row = new ArrayList<>();
-   for (int j = 0; j < i + 1; ++j) {
-    int temp = (j - 1 >= 0 ? res.get(i - 1).get(j - 1) : 0) + (j <= i - 1 ? res.get(i - 1).get(j) : 0);
-    row.add(temp);
-   }
-
-   res.add(row);
-  }
-
-  return res;
-
- }
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> res = new ArrayList<>();
+        int rowNum = 1;
+        while(rowNum<=numRows){
+            List<Integer> row = new ArrayList<>();
+            List<Integer> preRow = new ArrayList<>();
+            if(rowNum>1){
+                preRow = res.get(rowNum-2);
+            }
+            for(int i=0; i<rowNum; ++i){
+                if(i==0||i==(rowNum-1)){
+                    row.add(1);
+                }else{
+                    row.add(preRow.get(i-1)+preRow.get(i));
+                }
+            }
+            res.add(row);
+            rowNum++;
+        }
+        
+        return res;
+    }
 }
-
-// 在复杂表达式使用?时最好加括号
-// @lc code=end
