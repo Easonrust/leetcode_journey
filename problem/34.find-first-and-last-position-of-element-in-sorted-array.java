@@ -1,47 +1,51 @@
 class Solution {
     public int[] searchRange(int[] nums, int target) {
-        if (nums.length == 0) {
-            return new int[] { -1, -1 };
-        }
-
-        return new int[] { findFirst(nums, target), findLast(nums, target) };
+        int start = findStart(nums, target);
+        int end = findEnd(nums, target);
+        return new int[]{start, end};
     }
-
-    public int findFirst(int[] nums, int target) {
+    
+    private int findStart(int[] nums, int target){
         int l = 0;
-        int r = nums.length - 1;
-        while (l <= r) {
-            int mid = l + (r - l) / 2;
-            if (nums[mid] >= target) {
-                r = mid - 1;
-            } else if (nums[mid] < target) {
+        int h = nums.length - 1;
+        while(l<=h){
+            int mid = l + (h-l)/2;
+            int num = nums[mid];
+            if(num<target){
                 l = mid + 1;
+            }else if(num>target){
+                h = mid - 1;
+            }else{
+                h = mid - 1;
             }
         }
-
-        if (l == nums.length || nums[l] != target) {
+        
+        if(l>=nums.length||nums[l]!=target){
             return -1;
         }
-
+        
         return l;
     }
-
-    public int findLast(int[] nums, int target) {
+    
+    private int findEnd(int[] nums, int target){
         int l = 0;
-        int r = nums.length - 1;
-        while (l <= r) {
-            int mid = l + (r - l) / 2;
-            if (nums[mid] <= target) {
+        int h = nums.length - 1;
+        while(l<=h){
+            int mid = l + (h-l)/2;
+            int num = nums[mid];
+            if(num<target){
                 l = mid + 1;
-            } else {
-                r = mid - 1;
+            }else if(num>target){
+                h = mid - 1;
+            }else{
+                l = mid + 1;
             }
         }
-
-        if (r == -1 || nums[r] != target) {
+        
+        if(h<0||nums[h]!=target){
             return -1;
         }
-
-        return r;
+        
+        return h;
     }
 }
