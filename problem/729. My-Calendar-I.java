@@ -1,33 +1,29 @@
 class MyCalendar {
-
-    TreeMap<Integer, Integer> events;
-
+    TreeMap<Integer, Integer> calendar;
     public MyCalendar() {
-        events = new TreeMap<>();
+        calendar = new TreeMap<>();        
     }
-
+    
     public boolean book(int start, int end) {
-        Integer beforeStart = events.floorKey(start);
-        Integer afterStart = events.ceilingKey(start);
-        if (beforeStart != null) {
-            Integer beforeEnd = events.get(beforeStart);
-            if (beforeEnd > start) {
+        Integer beforeStart = calendar.floorKey(start);
+        Integer afterStart = calendar.ceilingKey(start);
+        if(beforeStart!=null){
+            int beforeEnd = calendar.get(beforeStart);
+            if(beforeEnd>start){
                 return false;
             }
         }
-
-        if (afterStart != null) {
-            if (end > afterStart) {
+        
+        if(afterStart!=null){
+            if(end>afterStart){
                 return false;
             }
         }
-        events.put(start, end);
+        
+        calendar.put(start, end);
         return true;
-
     }
 }
-
-// 使用treeMap查看是否和前后重合
 
 /**
  * Your MyCalendar object will be instantiated and called as such:
