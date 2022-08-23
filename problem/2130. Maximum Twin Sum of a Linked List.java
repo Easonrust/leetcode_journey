@@ -9,7 +9,7 @@
  * }
  */
 class Solution {
-    public boolean isPalindrome(ListNode head) {
+    public int pairSum(ListNode head) {
         ListNode slow = head;
         ListNode fast = head;
         while(fast.next!=null&&fast.next.next!=null){
@@ -17,25 +17,25 @@ class Solution {
             fast = fast.next.next;
         }
         
-        ListNode right = reverse(slow.next);
+        ListNode right = reverseList(slow.next);
+        int res = Integer.MIN_VALUE;
         while(right!=null){
-            if(head.val!=right.val){
-                return false;
-            }
+            res = Math.max(res, head.val+right.val);
             head = head.next;
             right = right.next;
         }
         
-        return true;
+        return res;
     }
     
-    private ListNode reverse(ListNode node) {
-        if(node==null||node.next==null){
-            return node;
+    private ListNode reverseList(ListNode head) {
+        if(head==null||head.next==null){
+            return head;
         }
-        ListNode newHead = reverse(node.next);
-        node.next.next = node;
-        node.next = null;
+        
+        ListNode newHead = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
         return newHead;
     }
 }
