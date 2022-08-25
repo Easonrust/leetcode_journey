@@ -1,26 +1,18 @@
-/*
- * @lc app=leetcode id=383 lang=java
- *
- * [383] Ransom Note
- */
-
-// @lc code=start
 class Solution {
- public boolean canConstruct(String ransomNote, String magazine) {
-  int[] cidx = new int[26];
-  for (int i = 0; i < magazine.length(); ++i) {
-   int idx = magazine.charAt(i) - 'a';
-   cidx[idx]++;
-  }
-  for (int i = 0; i < ransomNote.length(); ++i) {
-   int idx = ransomNote.charAt(i) - 'a';
-   if (cidx[idx] == 0) {
-    return false;
-   }
-   cidx[idx]--;
-  }
-  return true;
- }
+    public boolean canConstruct(String ransomNote, String magazine) {
+        int[] cnts1 = new int[26];
+        int[] cnts2 = new int[26];
+        for(char ch:magazine.toCharArray()){
+            cnts1[ch-'a']++;
+        }
+        
+        for(char ch:ransomNote.toCharArray()){
+            cnts2[ch-'a']++;
+            if(cnts2[ch-'a']>cnts1[ch-'a']){
+                return false;
+            }
+        }
+        
+        return true;
+    }
 }
-// @lc code=end
-// 用一个大小为26的数组存储字符即可
