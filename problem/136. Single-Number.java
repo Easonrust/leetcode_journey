@@ -4,10 +4,6 @@ class Solution {
         for(int num:nums){
             res = res ^ num;
         }
-        
         return res;
     }
 }
-
-//a^a=0;a^0=a
-
