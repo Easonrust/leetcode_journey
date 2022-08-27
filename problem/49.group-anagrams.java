@@ -1,28 +1,25 @@
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
         List<List<String>> res = new ArrayList<>();
-        Map<String, List<String>> groups = new HashMap<>();
-        
+        Map<String, List<String>> map = new HashMap<>();
         for(String str:strs){
+            List<String> list = new ArrayList<>();
             String normalStr = getNormalStr(str);
-            List<String> group = new ArrayList<>();
-            if(groups.containsKey(normalStr)){
-                group = groups.get(normalStr);
+            if(map.containsKey(normalStr)){
+                list = map.get(normalStr);
             }
-            group.add(str);
-            groups.put(normalStr, group);
+            list.add(str);
+            map.put(normalStr, list);
         }
-        
-        for(String key:groups.keySet()){
-            res.add(groups.get(key));
+        for(String str:map.keySet()){
+            res.add(map.get(str));
         }
-        
         return res;
     }
     
     private String getNormalStr(String str) {
-        char[] strArr = str.toCharArray();
-        Arrays.sort(strArr);
-        return new String(strArr);
+        char[] chs = str.toCharArray();
+        Arrays.sort(chs);
+        return new String(chs);
     }
 }
