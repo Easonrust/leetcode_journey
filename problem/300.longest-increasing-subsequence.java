@@ -6,18 +6,14 @@ class Solution {
         for(int i=0; i<n; ++i){
             for(int j=0; j<i; ++j){
                 if(nums[i]>nums[j]){
-                    dp[i] = Math.max(dp[i], 1+dp[j]);
+                    dp[i] = Math.max(dp[i], dp[j]+1);
                 }
             }
         }
-        
         int res = 0;
         for(int d:dp){
             res = Math.max(res, d);
         }
-        
         return res;
     }
 }
-
-// dp[i] 以nums[i]结尾的最长串的长度
