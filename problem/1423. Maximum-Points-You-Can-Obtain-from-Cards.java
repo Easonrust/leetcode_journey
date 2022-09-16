@@ -1,22 +1,20 @@
 class Solution {
     public int maxScore(int[] cardPoints, int k) {
         int n = cardPoints.length;
-        int[] frontPoints = new int[n + 1];
-        int[] backPoints = new int[n + 1];
-
-        for (int i = 0; i < k; i++) {
-            frontPoints[i + 1] = cardPoints[i] + frontPoints[i];
-            backPoints[i + 1] = cardPoints[n - i - 1] + backPoints[i];
+        int[] dp1 = new int[k+1];
+        int[] dp2 = new int[k+1];
+        dp1[0] = 0;
+        dp2[0] = 0;
+        for(int i=1; i<=k; ++i){
+            dp1[i] = dp1[i-1] + cardPoints[i-1];
         }
-
-        int res = 0;
-        for (int i = 0; i <= k; i++) {
-            res = Math.max(res, frontPoints[i] + backPoints[k - i]);
+        for(int j=1; j<=k; ++j){
+            dp2[j] = dp2[j-1] + cardPoints[n-j];
         }
-
+        int res = Integer.MIN_VALUE;
+        for(int i=0; i<=k; ++i){
+            res = Math.max(res, dp1[i]+dp2[k-i]);
+        }
         return res;
     }
 }
-
-// frontPoints[i]中存从前端取i个card获得的points
-// backPoints[i]中存从后端取i个card获得的points
