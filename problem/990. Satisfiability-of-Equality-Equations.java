@@ -1,71 +1,55 @@
 class Solution {
-    public boolean equationsPossible(String[] equations) {
-        UF uf = new UF(26);
-        for (String equation : equations) {
-            char c1 = equation.charAt(0);
-            char c2 = equation.charAt(3);
-            char eq = equation.charAt(1);
-            if (eq == '=') {
-                uf.union(c1 - 'a', c2 - 'a');
-            }
-        }
-
-        for (String equation : equations) {
-            char c1 = equation.charAt(0);
-            char c2 = equation.charAt(3);
-            char eq = equation.charAt(1);
-            if (eq == '!') {
-                if (uf.connected(c1 - 'a', c2 - 'a')) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
     class UF {
         int[] parent;
-        int[] size;
-
-        public UF(int n) {
-            parent = new int[n];
-            size = new int[n];
-            for (int i = 0; i < n; ++i) {
+        public UF(){
+            parent = new int[26];
+            for(int i=0; i<26; ++i){
                 parent[i] = i;
-                size[i] = 1;
             }
         }
-
+        
         public int find(int i) {
-            while (i != parent[i]) {
-                parent[i] = parent[parent[i]];
+            while(parent[i]!=i){
                 i = parent[i];
             }
             return i;
         }
-
-        public void union(int x, int y) {
-            int rootX = find(x);
-            int rootY = find(y);
-
-            if (rootX == rootY) {
+        
+        public void union(int i, int j) {
+            int a = find(i);
+            int b = find(j);
+            if(a==b){
                 return;
             }
-
-            if (size[rootX] > size[rootY]) {
-                parent[rootY] = rootX;
-                size[rootX] += size[rootY];
-            } else {
-                parent[rootX] = rootY;
-                size[rootY] += size[rootX];
+            parent[a] = b;
+        }
+        
+        public boolean connected(int i, int j) {
+            return find(i) == find(j);
+        }
+    }
+    public boolean equationsPossible(String[] equations) {
+        UF uf = new UF();
+        for(String equation:equations) {
+            char sym = equation.charAt(1);
+            char a = equation.charAt(0);
+            char b = equation.charAt(3);
+            if(sym=='='){
+                uf.union(a-'a', b-'a');
             }
         }
-
-        public boolean connected(int x, int y) {
-            int rootX = find(x);
-            int rootY = find(y);
-            return rootX == rootY;
+        
+        for(String equation:equations) {
+            char sym = equation.charAt(1);
+            char a = equation.charAt(0);
+            char b = equation.charAt(3);
+            if(sym=='!'){
+               if(uf.connected(a-'a', b-'a')){
+                   return false;
+               }
+            }
         }
+        
+        return true;
     }
 }
