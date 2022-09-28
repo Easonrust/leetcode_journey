@@ -10,26 +10,23 @@
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode dummy = new ListNode(-1);
+        ListNode dummy = new ListNode();
         dummy.next = head;
-        ListNode node = findNthFromEnd(dummy,n+1);
-        node.next = node.next.next;
+        ListNode x = findNthFromEnd(dummy, n+1);
+        x.next = x.next.next;
         return dummy.next;
     }
     
-    private ListNode findNthFromEnd(ListNode node, int n){
-        ListNode fast = node;
-        for(int i=0;i<n;++i){
-            fast = fast.next;
+    private ListNode findNthFromEnd(ListNode head, int n) {
+        ListNode first = head;
+        for(int i=0; i<n; ++i){
+            first = first.next;
         }
-        
-        ListNode slow = node;
-        while(fast!=null){
-            slow=slow.next;
-            fast=fast.next;
+        ListNode second = head;
+        while(first!=null){
+            first = first.next;
+            second = second.next;
         }
-        return slow;
+        return second;
     }
 }
-// @lc code=end
-// 相当于两个速度相同的人赛跑，第一个人提前n距离跑，那么第一个人到达终点时，第二个处于倒数n距离的位置
