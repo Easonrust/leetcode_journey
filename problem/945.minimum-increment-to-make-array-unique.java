@@ -1,24 +1,16 @@
-import java.util.Arrays;
-
-/*
- * @lc app=leetcode id=945 lang=java
- *
- * [945] Minimum Increment to Make Array Unique
- */
-
-// @lc code=start
 class Solution {
- public int minIncrementForUnique(int[] nums) {
-  int res = 0;
-  Arrays.sort(nums);
-  for (int i = 1; i < nums.length; ++i) {
-   while (nums[i] <= nums[i - 1]) {
-    int add = nums[i - 1] + 1 - nums[i];
-    nums[i] += add;
-    res += add;
-   }
-  }
-  return res;
- }
+    public int minIncrementForUnique(int[] nums) {
+        Arrays.sort(nums);
+        int curMax = nums[0];
+        int res = 0;
+        for(int i=1; i<nums.length; ++i){
+            if(nums[i]<=curMax){
+                curMax++;
+                res += (curMax-nums[i]);
+            }else{
+                curMax = nums[i];
+            }
+        }
+        return res;
+    }
 }
-// @lc code=end
