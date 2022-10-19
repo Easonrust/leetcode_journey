@@ -3,8 +3,9 @@ class Solution {
     public int uniquePaths(int m, int n) {
         memo = new int[m][n];
         for(int[] me:memo){
-            Arrays.fill(me, -1);
+            Arrays.fill(me, -1);            
         }
+
         return dp(m-1, n-1);
     }
     
@@ -18,11 +19,11 @@ class Solution {
         }
         
         int res = 0;
-        if((i-1)>=0){
-            res += dp(i-1,j);
+        if(i>0){
+            res += dp(i-1, j);
         }
         
-        if((j-1)>=0){
+        if(j>0){
             res += dp(i, j-1);
         }
         
