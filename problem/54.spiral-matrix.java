@@ -1,49 +1,38 @@
-// @lc code=start
 class Solution {
- private List<Integer> res;
-
- public List<Integer> spiralOrder(int[][] matrix) {
-  res = new ArrayList<>();
-  int i1 = 0, i2 = matrix.length - 1;
-  int j1 = 0, j2 = matrix[0].length - 1;
-  while (i1 <= i2 && j1 <= j2) {
-   add(matrix, i1++, i2--, j1++, j2--);
-  }
-  return res;
- }
-
- private void add(int[][] matrix, int i1, int i2, int j1, int j2) {
-  if (i1 == i2) {
-   for (int j = j1; j <= j2; ++j) {
-    res.add(matrix[i1][j]);
-   }
-   return;
-  }
-  if (j1 == j2) {
-   for (int i = i1; i <= i2; ++i) {
-    res.add(matrix[i][j1]);
-   }
-   return;
-  }
-
-  for (int j = j1; j < j2; ++j) {
-   res.add(matrix[i1][j]);
-  }
-
-  for (int i = i1; i < i2; ++i) {
-   res.add(matrix[i][j2]);
-  }
-
-  for (int j = j2; j > j1; --j) {
-   res.add(matrix[i2][j]);
-  }
-
-  for (int i = i2; i > i1; --i) {
-   res.add(matrix[i][j1]);
-  }
-
-  return;
- }
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> res = new ArrayList<>();
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int upperbound = 0;
+        int lowerbound = m-1;
+        int leftbound = 0;
+        int rightbound = n-1;
+        while(res.size()<m*n){
+            if(upperbound<=lowerbound){
+                for(int j=leftbound; j<=rightbound; j++){
+                    res.add(matrix[upperbound][j]);
+                }
+                upperbound++;
+            }
+            if(rightbound>=leftbound){
+                for(int i=upperbound; i<=lowerbound; i++){
+                    res.add(matrix[i][rightbound]);
+                }
+                rightbound--;
+            }
+            if(lowerbound>=upperbound){
+                for(int j=rightbound; j>=leftbound; j--){
+                    res.add(matrix[lowerbound][j]);
+                }
+                lowerbound--;
+            }
+            if(leftbound<=rightbound){
+                for(int i=lowerbound; i>=upperbound; i--){
+                    res.add(matrix[i][leftbound]);
+                }
+                leftbound++;
+            }
+        }
+        return res;
+    }
 }
-// @lc code=end
-// 从外往里一圈一圈遍历并存储矩阵元素即可。
