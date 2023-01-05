@@ -20,21 +20,21 @@ class Solution {
         for(int i=0; i<inorder.length; ++i){
             idxForVal.put(inorder[i], i);
         }
-        TreeNode root = helper(preorder, inorder, 0, preorder.length-1, 0, inorder.length-1);
+
+        TreeNode root = helper(preorder, 0, preorder.length-1, inorder, 0, inorder.length-1);
         return root;
     }
-    
-    private TreeNode helper(int[] preorder, int[] inorder, int prestart, int preend, int instart, int inend){
-        if(prestart>preend){
+
+    private TreeNode helper(int[] preorder, int preStart, int preEnd, int[] inorder, int inStart, int inEnd) {
+        if(preStart>preEnd){
             return null;
         }
-        int rootval = preorder[prestart];
-        TreeNode root = new TreeNode(rootval);
-        int idx = idxForVal.get(rootval);
-        
-        int leftsize = idx - instart;
-        root.left = helper(preorder, inorder, prestart+1, prestart+leftsize, instart, idx-1);
-        root.right = helper(preorder, inorder, prestart+leftsize+1, preend, idx+1, inend);
+        int rootVal = preorder[preStart];
+        TreeNode root = new TreeNode(rootVal);
+        int rootIdx = idxForVal.get(rootVal);
+        int leftSize = rootIdx - inStart;
+        root.left = helper(preorder, preStart+1, preStart+leftSize, inorder, inStart, rootIdx-1);
+        root.right = helper(preorder, preStart+leftSize+1, preEnd, inorder, rootIdx+1, inEnd);
         return root;
     }
 }
