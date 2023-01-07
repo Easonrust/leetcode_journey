@@ -2,36 +2,33 @@ class Solution {
     public List<Integer> findAnagrams(String s, String p) {
         int[] window = new int[26];
         int[] needs = new int[26];
-
-        for (char c : p.toCharArray()) {
-            needs[c - 'a']++;
+        for(char c:p.toCharArray()){
+            needs[c-'a']++;
         }
-
         int left = 0;
         int right = 0;
+        int n = s.length();
         List<Integer> res = new ArrayList<>();
-        while (right < s.length()) {
-            char c1 = s.charAt(right);
+        while(right<n){
+            char in = s.charAt(right);
             right++;
+            window[in-'a']++;
 
-            window[c1 - 'a']++;
-
-            while (right - left > p.length()) {
-                char c2 = s.charAt(left);
+            while(right-left>p.length()){
+                char out = s.charAt(left);
                 left++;
-
-                window[c2 - 'a']--;
+                window[out-'a']--;
             }
 
-            if (right - left == p.length()) {
-                boolean flag = true;
-                for (int i = 0; i < window.length; ++i) {
-                    if (window[i] != needs[i]) {
-                        flag = false;
+            if(right-left==p.length()){
+                boolean match = true;
+                for(int i=0; i<26; ++i){
+                    if(window[i]!=needs[i]){
+                        match = false;
                         break;
                     }
                 }
-                if (flag) {
+                if(match){
                     res.add(left);
                 }
             }
