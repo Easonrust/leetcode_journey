@@ -1,23 +1,14 @@
-/*
- * @lc app=leetcode id=926 lang=java
- *
- * [926] Flip String to Monotone Increasing
- */
-
-// @lc code=start
 class Solution {
- public int minFlipsMonoIncr(String s) {
-  int N = s.length();
-  int[] P = new int[N + 1];
-  for (int i = 0; i < N; ++i) {
-   P[i + 1] = P[i] + (s.charAt(i) == '1' ? 1 : 0);
-  }
-  int ans = Integer.MAX_VALUE;
-  for (int j = 0; j <= N; ++j) {
-   ans = Math.min(ans, P[j] + N - j - (P[N] - P[j]));
-  }
-  return ans;
- }
+    public int minFlipsMonoIncr(String s) {
+        int n = s.length();
+        int[][] dp = new int[n+1][2];
+        dp[0][0] = 0;
+        dp[0][1] = 0;
+        for(int i=0; i<n; ++i){
+            dp[i+1][0] = dp[i][0] + (s.charAt(i)=='0' ? 0 : 1);
+            dp[i+1][1] = Math.min(dp[i][0], dp[i][1]) + (s.charAt(i)=='1' ? 0 : 1);
+        }
+
+        return Math.min(dp[n][0], dp[n][1]);
+    }
 }
-// DP, 没太搞懂
-// @lc code=end
