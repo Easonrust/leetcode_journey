@@ -1,6 +1,5 @@
 class Solution {
     int[] memo;
-
     public int jump(int[] nums) {
         int n = nums.length;
         memo = new int[n];
@@ -8,21 +7,23 @@ class Solution {
         return dp(nums, 0);
     }
 
-    private int dp(int[] nums, int p) {
+    private int dp(int[] nums, int start) {
         int n = nums.length;
-        if (p >= n - 1) {
+        if(start>=n-1) {
             return 0;
         }
 
-        if (memo[p] != n) {
-            return memo[p];
+        if(memo[start]!=n){
+            return memo[start];
         }
 
-        int steps = nums[p];
-        for (int i = 1; i <= steps; ++i) {
-            memo[p] = Math.min(memo[p], dp(nums, p + i) + 1);
+        for(int i=1; i<=nums[start]; ++i){
+            memo[start] = Math.min(memo[start], dp(nums, start+i)+1);
         }
-
-        return memo[p];
+        return memo[start];
     }
 }
+
+
+
+// dp(nums, 0) 从0到终点需要的步数
