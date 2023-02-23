@@ -1,50 +1,25 @@
-/*
- * @lc app=leetcode id=502 lang=java
- *
- * [502] IPO
- */
-
-// @lc code=start
 class Solution {
- class Project {
-  int p;
-  int c;
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        Integer[] projects = new Integer[profits.length];
+        for(int i=0; i<projects.length; ++i){
+            projects[i] = i;
+        }
+        Arrays.sort(projects,(o1,o2)->(capital[o1]-capital[o2]));
+        PriorityQueue<Integer> pq = new PriorityQueue<>((o1,o2)->(profits[o2]-profits[o1]));
+        int idx = 0;
+        int num = 0;
+        while(num<k){
+            while(idx<projects.length&&capital[projects[idx]]<=w){
+                pq.offer(projects[idx]);
+                idx++;
+            }
+            if(pq.isEmpty()){
+                break;
+            }
+            w += profits[pq.poll()];
+            num++;
+        }
+        return w;
+    }
 
-  Project(int profit, int capital) {
-   p = profit;
-   c = capital;
-  }
- }
-
- public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
-  List<Project> projects = new ArrayList<>();
-  for (int i = 0; i < profits.length; ++i) {
-   Project project = new Project(profits[i], capital[i]);
-   projects.add(project);
-  }
-  Collections.sort(projects, new Comparator<>() {
-   @Override
-   public int compare(Project o1, Project o2) {
-    return o2.p - o1.p;
-   }
-  });
-  int sum = w;
-  while (k > 0) {
-   int i = 0;
-   int end = projects.size();
-   while (i < end && projects.get(i).c > sum) {
-    i++;
-   }
-
-   if (i == end) {
-    break;
-   }
-   sum += projects.get(i).p;
-   projects.remove(i);
-   k--;
-  }
-  return sum;
- }
 }
-// @lc code=end
-// greedy, 但是使用priority queue可以优化到O(nlogn)
