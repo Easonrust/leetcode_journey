@@ -1,22 +1,21 @@
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
- * int val;
- * TreeNode left;
- * TreeNode right;
- * TreeNode() {}
- * TreeNode(int val) { this.val = val; }
- * TreeNode(int val, TreeNode left, TreeNode right) {
- * this.val = val;
- * this.left = left;
- * this.right = right;
- * }
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
     Map<String, Integer> map;
     List<TreeNode> res;
-
     public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
         map = new HashMap<>();
         res = new ArrayList<>();
@@ -24,20 +23,17 @@ class Solution {
         return res;
     }
 
-    public String traverse(TreeNode node) {
-        if (node == null) {
+    private String traverse(TreeNode root) {
+        if(root==null){
             return "#";
         }
-
-        String left = traverse(node.left);
-        String right = traverse(node.right);
-        String treeStr = left + "," + right + "," + node.val;
-        int freq = map.getOrDefault(treeStr, 0);
-        if (freq == 1) {
-            res.add(node);
+        String leftStr = traverse(root.left);
+        String rightStr = traverse(root.right);
+        String curStr = leftStr + "," + rightStr + "," + String.valueOf(root.val);
+        if(map.containsKey(curStr)&&map.get(curStr)==1){
+            res.add(root);
         }
-
-        map.put(treeStr, freq + 1);
-        return treeStr;
+        map.put(curStr, map.getOrDefault(curStr, 0)+1);
+        return curStr;
     }
 }
