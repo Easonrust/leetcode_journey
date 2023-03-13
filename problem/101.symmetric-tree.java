@@ -18,7 +18,7 @@ class Solution {
         return isSymmetric(root.left, root.right);
     }
 
-    public boolean isSymmetric(TreeNode root1, TreeNode root2) {
+    public boolean isSymmev fe1tric(TreeNode root1, TreeNode root2) {
         if(root1==null&&root2==null){
             return true;
         }
