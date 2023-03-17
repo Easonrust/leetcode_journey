@@ -1,49 +1,47 @@
 class Trie {
-    class TreeNode {
+    class Node{
         public static final int R = 26;
-        public TreeNode[] next;
-        public boolean isEnd;
-
-        TreeNode() {
-            next = new TreeNode[R];
+        Node[] next;
+        boolean isEnd;
+        Node(){
+            next = new Node[R];
         }
     }
 
-    TreeNode root;
-
+    Node root;
     public Trie() {
-        root = new TreeNode();
+        root = new Node();
     }
-
+    
     public void insert(String word) {
-        TreeNode node = root;
-        for (char c : word.toCharArray()) {
-            if (node.next[c - 'a'] == null) {
-                node.next[c - 'a'] = new TreeNode();
+        Node node = root;
+        for(char c:word.toCharArray()){
+            if(node.next[c-'a']==null){
+                node.next[c-'a'] = new Node();
             }
-            node = node.next[c - 'a'];
+            node = node.next[c-'a'];
         }
         node.isEnd = true;
     }
-
+    
     public boolean search(String word) {
-        TreeNode node = root;
-        for (char c : word.toCharArray()) {
-            if (node.next[c - 'a'] == null) {
+        Node node = root;
+        for(char c:word.toCharArray()){
+            if(node.next[c-'a']==null){
                 return false;
             }
-            node = node.next[c - 'a'];
+            node = node.next[c-'a'];
         }
         return node.isEnd;
     }
-
+    
     public boolean startsWith(String prefix) {
-        TreeNode node = root;
-        for (char c : prefix.toCharArray()) {
-            if (node.next[c - 'a'] == null) {
+        Node node = root;
+        for(char c:prefix.toCharArray()){
+            if(node.next[c-'a']==null){
                 return false;
             }
-            node = node.next[c - 'a'];
+            node = node.next[c-'a'];
         }
         return true;
     }
