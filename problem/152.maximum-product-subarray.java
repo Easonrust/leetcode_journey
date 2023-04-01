@@ -1,27 +1,28 @@
-/*
- * @lc app=leetcode id=152 lang=java
- *
- * [152] Maximum Product Subarray
- */
-
-// @lc code=start
 class Solution {
- public int maxProduct(int[] nums) {
+    public int maxProduct(int[] nums) {
+        int n = nums.length;
+        int[] dp1 = new int[n];
+        int[] dp2 = new int[n];
+        dp1[0] = nums[0];
+        dp2[0] = nums[0];
+        for(int i=1; i<n; ++i){
+            dp1[i] = getMin(dp1[i-1]*nums[i], dp2[i-1]*nums[i], nums[i]);
+            dp2[i] = getMax(dp1[i-1]*nums[i], dp2[i-1]*nums[i], nums[i]);
+        }
 
-  int pproduct = nums[0];
-  int nproduct = nums[0];
-  int res = nums[0];
-  for (int i = 1; i < nums.length; ++i) {
-   int cur = nums[i];
-   int temp_max = Math.max(cur, Math.max(pproduct * cur, nproduct * cur));
+        int res = Integer.MIN_VALUE;
+        for(int d:dp2){
+            res = Math.max(res, d);
+        }
+        
+        return res;
+    }
 
-   nproduct = Math.min(cur, Math.min(pproduct * cur, nproduct * cur));
-   pproduct = temp_max;
-   res = Math.max(temp_max, res);
-  }
-  return res;
- }
+    public int getMin(int a, int b, int c) {
+        return Math.min(Math.min(a, b), c);
+    }
+
+    public int getMax(int a, int b, int c) {
+        return Math.max(Math.max(a, b), c);
+    }
 }
-
-// dp
-// @lc code=end
