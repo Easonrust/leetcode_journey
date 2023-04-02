@@ -1,20 +1,34 @@
 class Solution {
+    int[] memo;
     public int coinChange(int[] coins, int amount) {
-        int[] dp = new int[amount + 1];
-        // 数组大小为 amount + 1，初始值也为 amount + 1
-        Arrays.fill(dp, amount + 1);
+        memo = new int[amount+1];
+        Arrays.fill(memo, 666);
+        return dp(coins, amount);
+    }
 
-        // base case
-        dp[0] = 0;
-        // 外层 for 循环在遍历所有状态的所有取值
-        for(int j = 0; j<coins.length; ++j) {
-            for (int i = 0; i < dp.length; i++) {
-                if (i - coins[j] < 0) {
-                    continue;
-                }
-                dp[i] = Math.min(dp[i], 1 + dp[i - coins[j]]);
-            }
+    private int dp(int[] coins, int amount) {
+        if(amount==0){
+            return 0;
         }
-        return (dp[amount] == amount + 1) ? -1 : dp[amount];
+        if(amount<0){
+            return -1;
+        }
+        if(memo[amount]!=666){
+            return memo[amount];
+        }
+        int res = Integer.MAX_VALUE;
+        for(int coin:coins){
+            int subProblem = dp(coins, amount-coin);
+            if(subProblem==-1){
+                continue;
+            }
+            res = Math.min(res, subProblem);
+        }
+        if(res==Integer.MAX_VALUE){
+            memo[amount] = -1;
+        }else{
+            memo[amount] = 1+res;
+        }
+        return memo[amount];
     }
 }
