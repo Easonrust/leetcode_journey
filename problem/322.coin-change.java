@@ -6,28 +6,31 @@ class Solution {
         return dp(coins, amount);
     }
 
-    private int dp(int[] coins, int amount) {
+    public int dp(int[] coins, int amount) {
         if(amount==0){
             return 0;
         }
+
         if(amount<0){
             return -1;
         }
+
         if(memo[amount]!=666){
             return memo[amount];
         }
+
         int res = Integer.MAX_VALUE;
         for(int coin:coins){
-            int subProblem = dp(coins, amount-coin);
-            if(subProblem==-1){
+            int next = dp(coins, amount-coin);
+            if(next==-1){
                 continue;
             }
-            res = Math.min(res, subProblem);
+            res = Math.min(res, next+1);
         }
         if(res==Integer.MAX_VALUE){
             memo[amount] = -1;
         }else{
-            memo[amount] = 1+res;
+            memo[amount] = res;
         }
         return memo[amount];
     }
