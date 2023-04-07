@@ -1,18 +1,18 @@
 class Solution {
     public boolean PredictTheWinner(int[] nums) {
-        return total(nums, 0, nums.length-1, 1)>=0;
-    }
+        int n = nums.length;
+        int[][] dp = new int[n][n];
+        for(int i=0; i<n; ++i){
+            dp[i][i] = nums[i];
+        }
 
-    private int total(int[] nums, int start, int end, int turn) {
-        if(start==end){
-            return nums[start]*turn;
+
+        for(int i=n-2; i>=0; i--){
+            for(int j=i+1; j<n; ++j){
+                dp[i][j] = Math.max(nums[i]-dp[i+1][j], nums[j]-dp[i][j-1]);
+            }
         }
-        int scoreStart = total(nums, start+1, end, -turn) + turn * nums[start];
-        int scoreEnd = total(nums, start, end-1, -turn) + turn * nums[end];
-        if(turn==1){
-            return Math.max(scoreStart, scoreEnd);
-        }else{
-            return Math.min(scoreStart, scoreEnd);
-        }
+
+        return dp[0][n-1]>=0;
     }
 }
