@@ -1,57 +1,41 @@
 class Solution {
-    boolean hasCycle = false;
-    boolean[] onPath;
-    boolean[] visited;
-    List<Integer> postOrder;
-    
-    List<Integer>[] buildGraph(int n, int[][] prerequisites){
-        List<Integer>[] graph = new ArrayList[n];
-        for(int i=0;i<n;++i){
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        List<Integer>[] graph = new ArrayList[numCourses];
+        int[] indegree = new int[numCourses];
+        for(int i=0; i<numCourses; ++i){
             graph[i] = new ArrayList<>();
         }
-        
         for(int[] prerequisite:prerequisites){
             int from = prerequisite[1];
             int to = prerequisite[0];
             graph[from].add(to);
+            indegree[to] += 1;
         }
-        return graph;
-    }
-    
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        onPath = new boolean[numCourses];
-        visited = new boolean[numCourses];
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-        postOrder = new ArrayList<>();
-        for(int i=0;i<numCourses;++i){
-            traverse(graph,i);
+        Queue<Integer> q = new LinkedList<>();
+        int[] res = new int[numCourses];
+        int count = 0;
+        for(int i=0; i<indegree.length; ++i){
+            if(indegree[i]==0){
+                q.offer(i);
+            }
         }
-        if(hasCycle){
+        while(!q.isEmpty()){
+            int sz = q.size();
+            for(int i=0; i<sz; ++i){
+                int cur = q.poll();
+                res[count] = cur;
+                count++;
+                for(int next:graph[cur]){
+                    indegree[next]-=1;
+                    if(indegree[next]==0){
+                        q.offer(next);
+                    }
+                }
+            }
+        }
+        if(count!=numCourses){
             return new int[]{};
         }
-        Collections.reverse(postOrder);
-        int[] res = new int[numCourses];
-        for(int i=0;i<res.length;++i){
-            res[i] = postOrder.get(i);
-        }
         return res;
-    }
-    
-    private void traverse(List<Integer>[] graph, int s){
-        if(onPath[s]==true){
-            hasCycle = true;
-        }
-        
-        if(visited[s]||hasCycle){
-            return;
-        }
-        
-        visited[s] = true;
-        onPath[s] = true;
-        for(int v:graph[s]){
-            traverse(graph,v);
-        }
-        postOrder.add(s);
-        onPath[s] = false;
     }
 }
