@@ -1,31 +1,31 @@
 class MyQueue {
-    Deque<Integer> s1;
-    Deque<Integer> s2;
+    Deque<Integer> head;
+    Deque<Integer> tail;
     public MyQueue() {
-        s1 = new LinkedList<>();
-        s2 = new LinkedList<>();
+        head = new LinkedList<>();
+        tail = new LinkedList<>();
     }
     
     public void push(int x) {
-        s2.push(x);
+        tail.push(x);
     }
     
     public int pop() {
         peek();
-        return s1.pop();
+        return head.pop();
     }
     
     public int peek() {
-        if(s1.isEmpty()){
-            while(!s2.isEmpty()){
-                s1.push(s2.pop());
+        if(head.isEmpty()){
+            while(!tail.isEmpty()){
+                head.push(tail.pop());
             }
         }
-        return s1.peek();
+        return head.peek();
     }
     
     public boolean empty() {
-        return s1.isEmpty() && s2.isEmpty();
+        return head.isEmpty()&&tail.isEmpty();
     }
 }
 
