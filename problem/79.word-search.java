@@ -1,18 +1,19 @@
 class Solution {
-    boolean find;
     boolean[][] visited;
+    boolean find = false;
     public boolean exist(char[][] board, String word) {
         int m = board.length;
         int n = board[0].length;
         visited = new boolean[m][n];
-        for(int i = 0; i<m; ++i){
+        for(int i=0; i<m; ++i){
             for(int j=0; j<n; ++j){
-                if(word.charAt(0)==board[i][j]){
+                char cur = board[i][j];
+                if(cur==word.charAt(0)){
                     visited[i][j] = true;
                     dfs(board, word, i, j, 1);
                     visited[i][j] = false;
                 }
-                if(find){
+                if(find==true){
                     return true;
                 }
             }
@@ -20,25 +21,31 @@ class Solution {
         return false;
     }
 
-    private void dfs(char[][] board, String word, int i, int j, int start) {
-        if(start==word.length()){
+    private void dfs(char[][] board, String word, int x, int y, int len) {
+        if(len==word.length()){
             find = true;
+        }
+        if(find==true){
             return;
         }
-
+        int[][] dirs = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
         int m = board.length;
         int n = board[0].length;
-
-        int[][] dirs = new int[][] {{-1,0}, {1, 0}, {0, 1}, {0, -1}};
-
         for(int[] dir:dirs){
-            int ni = i + dir[0];
-            int nj = j + dir[1];
-            if(ni>=0&&ni<m&&nj>=0&&nj<n&&!visited[ni][nj]&&board[ni][nj]==word.charAt(start)){
-                visited[ni][nj] = true;
-                dfs(board, word, ni, nj, start+1);
-                visited[ni][nj] = false;
+            int nx = x + dir[0];
+            int ny = y + dir[1];
+            if(nx<0||ny<0||nx>=m||ny>=n){
+                continue;
             }
+            if(visited[nx][ny]){
+                continue;
+            }
+            if(board[nx][ny]!=word.charAt(len)){
+                continue;
+            }
+            visited[nx][ny] = true;
+            dfs(board, word, nx, ny, len+1);
+            visited[nx][ny] = false;
         }
     }
 }
