@@ -1,27 +1,26 @@
 class Solution {
     public List<Integer> findClosestElements(int[] arr, int k, int x) {
-        int right = findRightBound(arr, x);
-        int left = right-1;
-        for(int i=0; i<k; ++i){
-            if(left<0){
+        List<Integer> res = new ArrayList<>();
+        int right = getRightBound(arr, x);
+        int left = right - 1;
+        while (k-- > 0) {
+            if (left < 0) {
                 right++;
-            }else if(right>=arr.length){
+            } else if (right >= arr.length) {
                 left--;
-            }else if(x-arr[left]<=arr[right]-x){
+            } else if (x - arr[left] <= arr[right] - x) {
                 left--;
-            }else{
+            } else {
                 right++;
             }
         }
-        
-        List<Integer> res = new ArrayList<>();
-        for(int i=left+1; i<=right-1; ++i){
+        for (int i = left + 1; i < right; i++) {
             res.add(arr[i]);
         }
         return res;
     }
-    
-    private int findRightBound(int[] arr, int x) {
+
+    private int getRightBound(int[] arr, int x) {
         int l = 0;
         int r = arr.length-1;
         while(l<r){
@@ -29,9 +28,9 @@ class Solution {
             if(arr[mid]>=x){
                 r = mid;
             }else{
-                l = mid+1;
+                l = mid + 1;
             }
         }
-        return l;
+        return r;
     }
 }

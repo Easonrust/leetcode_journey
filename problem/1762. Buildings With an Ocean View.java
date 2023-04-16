@@ -1,20 +1,21 @@
 class Solution {
     public int[] findBuildings(int[] heights) {
-        List<Integer> list = new ArrayList<>();
-        int highest = 0;
+        Deque<Integer> stack = new LinkedList<>();
         int n = heights.length;
-        for(int i=n-1; i>=0; i--){
-            if(highest<heights[i]){
-                list.add(i);
-                highest = heights[i];
+        Deque<Integer> res = new LinkedList<>();
+        for(int i=n-1; i>=0; --i){
+            while(!stack.isEmpty()&&stack.peek()<heights[i]){
+                stack.pop();
             }
+            if(stack.isEmpty()){
+                res.push(i);
+            }
+            stack.push(heights[i]);
         }
-
-        Collections.reverse(list);
-        int[] res = new int[list.size()];
-        for(int i=0; i<res.length; ++i){
-            res[i] = list.get(i);
+        int[] resArr = new int[res.size()];
+        for(int i=0; i<resArr.length; ++i){
+            resArr[i] = res.pop();
         }
-        return res;
+        return resArr;
     }
 }

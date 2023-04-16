@@ -1,49 +1,38 @@
-/*
- * @lc app=leetcode id=380 lang=java
- *
- * [380] Insert Delete GetRandom O(1)
- */
-
-// @lc code=start
 class RandomizedSet {
-
- Map<Integer, Integer> map;
- List<Integer> list;
- Random rand;
-
- public RandomizedSet() {
-  rand = new Random();
-  map = new HashMap<>();
-  list = new ArrayList<>();
- }
-
- public boolean insert(int val) {
-  if (map.containsKey(val)) {
-   return false;
-  }
-  map.put(val, list.size());
-  list.add(val);
-  return true;
- }
-
- public boolean remove(int val) {
-  if (!map.containsKey(val)) {
-   return false;
-  }
-
-  // 将最后一个元素填补上去，可以保证其他元素的idx永远不变
-  int lastElement = list.get(list.size() - 1);
-  int idx = map.get(val);
-  list.set(idx, lastElement);
-  map.put(lastElement, idx);
-  list.remove(list.size() - 1);
-  map.remove(val);
-  return true;
- }
-
- public int getRandom() {
-  return list.get(rand.nextInt(list.size()));
- }
+    Random rand;
+    List<Integer> list;
+    Map<Integer, Integer> idxForNum;
+    public RandomizedSet() {
+        rand = new Random();
+        idxForNum = new HashMap<>();
+        list = new ArrayList<>();
+    }
+    
+    public boolean insert(int val) {
+        if(idxForNum.containsKey(val)){
+            return false;
+        }
+        idxForNum.put(val, list.size());
+        list.add(val);
+        return true;
+    }
+    
+    public boolean remove(int val) {
+        if(!idxForNum.containsKey(val)){
+            return false;
+        }
+        int lastNum = list.get(list.size()-1);
+        int idx = idxForNum.get(val);
+        list.set(idx, lastNum);
+        list.remove(list.size()-1);
+        idxForNum.put(lastNum, idx);
+        idxForNum.remove(val);
+        return true;
+    }
+    
+    public int getRandom() {
+        return list.get(rand.nextInt(list.size()));
+    }
 }
 
 /**
@@ -53,4 +42,3 @@ class RandomizedSet {
  * boolean param_2 = obj.remove(val);
  * int param_3 = obj.getRandom();
  */
-// @lc code=end
