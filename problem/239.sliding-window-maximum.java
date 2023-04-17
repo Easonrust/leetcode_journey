@@ -1,46 +1,32 @@
 class Solution {
-    class MonotonicQueue {
-        Deque<Integer> list = new LinkedList<>();
-
-        public MonotonicQueue() {
-        }
-
-        public void push(int n) {
-            while (!list.isEmpty() && list.getLast() < n) {
-                list.removeLast();
-            }
-            list.addLast(n);
-        }
-
-        public void pop(int n) {
-            if (list.getFirst() == n) {
-                list.removeFirst();
-            }
-        }
-
-        public int max() {
-            return list.getFirst();
-        }
-    }
-
     public int[] maxSlidingWindow(int[] nums, int k) {
-        MonotonicQueue mq = new MonotonicQueue();
-        List<Integer> res = new ArrayList<>();
-        for (int i = 0; i < nums.length; ++i) {
-            if (i < k - 1) {
-                mq.push(nums[i]);
-            } else {
-                mq.push(nums[i]);
-                res.add(mq.max());
-                mq.pop(nums[i - k + 1]);
+        Deque<Integer> dq = new LinkedList<>();
+        int n = nums.length;
+        int[] res = new int[n-k+1];
+        for(int i=0; i<k; ++i){
+            while(!dq.isEmpty()&&dq.getLast()<nums[i]){
+                dq.removeLast();
             }
+            dq.addLast(nums[i]);
         }
 
-        int[] resArr = new int[res.size()];
-        for (int i = 0; i < resArr.length; ++i) {
-            resArr[i] = res.get(i);
-        }
+        res[0] = dq.getFirst();
 
-        return resArr;
+        for(int i=k; i<n; ++i){
+
+            while(!dq.isEmpty()&&dq.getLast()<nums[i]){
+                dq.removeLast();
+            }
+            dq.addLast(nums[i]);
+
+            if(!dq.isEmpty()){
+                if(nums[i-k]==dq.getFirst()){
+                    dq.removeFirst();
+                }
+            }
+            res[i-k+1] = dq.getFirst();
+        }
+        return res;
+
     }
 }
