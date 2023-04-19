@@ -1,50 +1,48 @@
 class Solution {
     public int calculate(String s) {
-        Queue<Character> q = new LinkedList<>();
-        for(char c:s.toCharArray()){
-            q.offer(c);
+        Queue<Character> queue = new LinkedList<>();
+        for(char ch:s.toCharArray()){
+            queue.offer(ch);
         }
-        return helper(q);
+        return helper(queue);
     }
 
-    public int helper(Queue<Character> q) {
-        int num = 0;
-        char sign = '+';
+    private int helper(Queue<Character> queue) {
         Deque<Integer> stack = new LinkedList<>();
-        while(!q.isEmpty()){
-            char c = q.poll();
-            if(Character.isDigit(c)){
-                num = 10*num + (c-'0');
+        int num = 0;
+        int sign = '+';
+        while(!queue.isEmpty()){
+            char ch = queue.poll();
+            if(Character.isDigit(ch)){
+                num = num * 10 + (ch-'0');
             }
 
-            if(c=='('){
-                num = helper(q);
+            if(ch=='('){
+                num = helper(queue);
             }
 
-            if(!Character.isDigit(c)||q.isEmpty()){
+            if(!Character.isDigit(ch)||queue.isEmpty()){
                 if(sign=='+'){
                     stack.push(num);
                 }else if(sign=='-'){
                     stack.push(-num);
                 }else if(sign=='*'){
-                    int pre = stack.pop();
-                    stack.push(pre*num);
-                }else if (sign == '/'){
-                    int pre = stack.pop();
-                    stack.push(pre/num);
+                    stack.push(stack.pop()*num);
+                }else if(sign=='/'){
+                    stack.push(stack.pop()/num);
                 }
-                sign = c;
+                sign = ch;
                 num = 0;
             }
 
-            if(c==')'){
+            if(ch==')'){
                 break;
             }
         }
 
         int res = 0;
-        for(int re:stack){
-            res += re;
+        while(!stack.isEmpty()){
+            res += stack.pop();
         }
         return res;
     }
