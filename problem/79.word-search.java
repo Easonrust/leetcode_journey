@@ -1,16 +1,16 @@
 class Solution {
     boolean[][] visited;
-    boolean find = false;
+    boolean find;
+    int[][] dirs = {{-1,0},{1,0},{0,-1},{0,1}};
     public boolean exist(char[][] board, String word) {
         int m = board.length;
         int n = board[0].length;
         visited = new boolean[m][n];
         for(int i=0; i<m; ++i){
             for(int j=0; j<n; ++j){
-                char cur = board[i][j];
-                if(cur==word.charAt(0)){
+                if(word.charAt(0)==board[i][j]){
                     visited[i][j] = true;
-                    dfs(board, word, i, j, 1);
+                    dfs(board, i, j, 1, word);
                     visited[i][j] = false;
                 }
                 if(find==true){
@@ -21,31 +21,31 @@ class Solution {
         return false;
     }
 
-    private void dfs(char[][] board, String word, int x, int y, int len) {
+    private void dfs(char[][] board, int i, int j, int len, String word) {
         if(len==word.length()){
             find = true;
+            return;
         }
         if(find==true){
             return;
         }
-        int[][] dirs = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
         int m = board.length;
         int n = board[0].length;
         for(int[] dir:dirs){
-            int nx = x + dir[0];
-            int ny = y + dir[1];
-            if(nx<0||ny<0||nx>=m||ny>=n){
+            int ni = i + dir[0];
+            int nj = j + dir[1];
+            if(ni<0||nj<0||ni>=m||nj>=n){
                 continue;
             }
-            if(visited[nx][ny]){
+            if(visited[ni][nj]){
                 continue;
             }
-            if(board[nx][ny]!=word.charAt(len)){
+            if(board[ni][nj]!=word.charAt(len)){
                 continue;
             }
-            visited[nx][ny] = true;
-            dfs(board, word, nx, ny, len+1);
-            visited[nx][ny] = false;
+            visited[ni][nj] = true;
+            dfs(board, ni, nj, len+1, word);
+            visited[ni][nj] = false;
         }
     }
 }
