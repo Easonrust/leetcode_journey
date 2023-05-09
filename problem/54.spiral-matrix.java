@@ -1,36 +1,39 @@
 class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
-        List<Integer> res = new ArrayList<>();
         int m = matrix.length;
         int n = matrix[0].length;
-        int upperbound = 0;
-        int lowerbound = m-1;
-        int leftbound = 0;
-        int rightbound = n-1;
+        List<Integer> res = new ArrayList<>();
+        int left = 0;
+        int right = n-1;
+        int up = 0;
+        int down = m - 1;
         while(res.size()<m*n){
-            if(upperbound<=lowerbound){
-                for(int j=leftbound; j<=rightbound; j++){
-                    res.add(matrix[upperbound][j]);
+            if(up<=down){
+                for(int j=left; j<=right; ++j){
+                    res.add(matrix[up][j]);
                 }
-                upperbound++;
+                up++;
             }
-            if(rightbound>=leftbound){
-                for(int i=upperbound; i<=lowerbound; i++){
-                    res.add(matrix[i][rightbound]);
+
+            if(right>=left){
+                for(int i=up; i<=down; ++i){
+                    res.add(matrix[i][right]);
                 }
-                rightbound--;
+                right--;
             }
-            if(lowerbound>=upperbound){
-                for(int j=rightbound; j>=leftbound; j--){
-                    res.add(matrix[lowerbound][j]);
+
+            if(down>=up){
+                for(int j=right; j>=left; --j){
+                    res.add(matrix[down][j]);
                 }
-                lowerbound--;
+                down--;
             }
-            if(leftbound<=rightbound){
-                for(int i=lowerbound; i>=upperbound; i--){
-                    res.add(matrix[i][leftbound]);
+
+            if(left<=right){
+                for(int i=down; i>=up; --i){
+                    res.add(matrix[i][left]);
                 }
-                leftbound++;
+                left++;
             }
         }
         return res;
