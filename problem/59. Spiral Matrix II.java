@@ -1,47 +1,44 @@
 class Solution {
     public int[][] generateMatrix(int n) {
-        int upperBound = 0;
-        int lowerBound = n-1;
-        int leftBound = 0;
-        int rightBound = n-1;
-        
-        int[][] res = new int[n][n];
-        
+        int[][] mat = new int[n][n];
         int num = 1;
-        while(num<=(n*n)){
-            if(upperBound<=lowerBound){
-                for(int j=leftBound; j<=rightBound; ++j){
-                    res[upperBound][j] = num;
+        int left = 0;
+        int right = n-1;
+        int top = 0;
+        int bottom = n-1;
+        while(num<=n*n){
+            if(top<=bottom){
+                for(int j=left; j<=right; ++j){
+                    mat[top][j] = num;
                     num++;
                 }
-                upperBound++;
+                top++;
             }
-            
-            if(leftBound<=rightBound){
-                for(int i=upperBound; i<=lowerBound; ++i){
-                    res[i][rightBound] = num;
+
+            if(right>=left){
+                for(int i=top; i<=bottom; ++i){
+                    mat[i][right] = num;
                     num++;
                 }
-                rightBound--;
+                right--;
             }
-            
-            if(upperBound<=lowerBound){
-                for(int j=rightBound; j>=leftBound; --j){
-                    res[lowerBound][j] = num;
+
+            if(bottom>=top){
+                for(int j=right; j>=left; --j){
+                    mat[bottom][j] = num;
                     num++;
                 }
-                lowerBound--;
+                bottom--;
             }
-            
-            if(leftBound<=rightBound){
-                for(int i=lowerBound; i>=upperBound; --i){
-                    res[i][leftBound] = num;
+
+            if(left<=right){
+                for(int i=bottom; i>=top; --i){
+                    mat[i][left] = num;
                     num++;
                 }
-                leftBound++;
+                left++;
             }
         }
-        
-        return res;
+        return mat;
     }
 }
