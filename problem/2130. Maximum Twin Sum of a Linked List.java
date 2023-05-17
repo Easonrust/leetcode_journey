@@ -11,31 +11,20 @@
 class Solution {
     public int pairSum(ListNode head) {
         ListNode slow = head;
-        ListNode fast = head;
-        while(fast.next!=null&&fast.next.next!=null){
+        ListNode fast = head.next;
+        Deque<Integer> dq = new LinkedList<>();
+        dq.addLast(slow.val);
+        while(fast!=null&&fast.next!=null){
             slow = slow.next;
+            dq.addLast(slow.val);
             fast = fast.next.next;
         }
-        
-        ListNode right = reverseList(slow.next);
         int res = Integer.MIN_VALUE;
-        while(right!=null){
-            res = Math.max(res, head.val+right.val);
-            head = head.next;
-            right = right.next;
+        fast = slow.next;
+        while(fast!=null){
+            res = Math.max(res, dq.removeLast()+fast.val);
+            fast = fast.next;
         }
-        
         return res;
-    }
-    
-    private ListNode reverseList(ListNode head) {
-        if(head==null||head.next==null){
-            return head;
-        }
-        
-        ListNode newHead = reverseList(head.next);
-        head.next.next = head;
-        head.next = null;
-        return newHead;
     }
 }
